@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import logoUEC from './assets/logo.png'
 import { useFormulario } from './hooks/useFormulario'
 import { useListas } from './hooks/useListas'
 import BarraProgreso from './components/BarraProgreso'
@@ -71,9 +72,7 @@ function PantallaIntro({ onComenzar }) {
   return (
     <div className={styles.introWrap}>
       <div className={styles.introCard}>
-        <div className={styles.introLogoBox}>
-          <span className={styles.introLogoLetra}>UEC</span>
-        </div>
+        <img src={logoUEC} alt="La Universidad en el Campo" className={styles.introLogo} />
         <h1 className={styles.introTitulo}>
           Seguimiento de Egresados<br />
           <span className={styles.introSubtitulo}>Iniciativa La Universidad en el Campo</span>

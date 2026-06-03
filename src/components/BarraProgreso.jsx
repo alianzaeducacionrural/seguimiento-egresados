@@ -1,3 +1,4 @@
+import logoUEC from '../assets/logo.png'
 import styles from './BarraProgreso.module.css'
 
 export default function BarraProgreso({ seccionActual, total, titulo }) {
@@ -7,7 +8,7 @@ export default function BarraProgreso({ seccionActual, total, titulo }) {
     <header className={styles.header}>
       <div className={styles.top}>
         <div className={styles.marca}>
-          <div className={styles.logoBox}>UEC</div>
+          <img src={logoUEC} alt="La Universidad en el Campo" className={styles.logoImg} />
           <div className={styles.marcaTexto}>
             <span className={styles.marcaNombre}>Universidad en el Campo</span>
             <span className={styles.marcaSub}>Comité de Cafeteros de Caldas</span>

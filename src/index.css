@@ -1,9 +1,11 @@
 /* ── Variables de diseño ── */
 :root {
-  --verde:        #16A34A;
-  --verde-dark:   #15803D;
-  --verde-light:  #DCFCE7;
-  --verde-txt:    #14532D;
+  --verde:        #1E7A35;
+  --verde-dark:   #1A6128;
+  --verde-light:  #E2F5E8;
+  --verde-txt:    #1A6128;
+  --lima:         #7BBD20;
+  --lima-light:   #EDF8DA;
   --naranja:      #EA580C;
   --naranja-light:#FFF7ED;
   --fondo:        #F8FAFC;

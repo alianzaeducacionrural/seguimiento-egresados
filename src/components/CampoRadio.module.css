@@ -29,8 +29,8 @@
 
 .opcion.activa {
   border-color: var(--verde);
-  background: linear-gradient(135deg, #16A34A, #15803D);
+  background: linear-gradient(135deg, #1E7A35, #1A6128);
   color: white;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
+  box-shadow: 0 2px 8px rgba(30, 122, 53, 0.3);
 }

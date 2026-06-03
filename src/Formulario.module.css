@@ -209,19 +209,19 @@
   padding: 0.8rem 1.75rem;
   border: none;
   border-radius: var(--radio);
-  background: linear-gradient(135deg, #16A34A, #15803D);
+  background: linear-gradient(135deg, #1E7A35, #1A6128);
   color: white;
   font-weight: 700;
   cursor: pointer;
   font-size: 0.95rem;
-  box-shadow: 0 2px 10px rgba(22, 163, 74, 0.35);
+  box-shadow: 0 2px 10px rgba(30, 122, 53, 0.35);
   transition: opacity var(--transicion), transform var(--transicion), box-shadow var(--transicion);
 }
 
 .btnSiguiente:hover:not(:disabled) {
   opacity: 0.92;
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.4);
+  box-shadow: 0 4px 14px rgba(30, 122, 53, 0.4);
 }
 
 .btnSiguiente:active:not(:disabled) {
@@ -258,22 +258,10 @@
   gap: 1.25rem;
 }
 
-.introLogoBox {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #16A34A, #15803D);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
-}
-
-.introLogoLetra {
-  font-size: 1rem;
-  font-weight: 800;
-  color: white;
-  letter-spacing: 0.05em;
+.introLogo {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
 }
 
 .introTitulo {
@@ -301,20 +289,20 @@
 .btnComenzar {
   margin-top: 0.5rem;
   padding: 0.9rem 2.5rem;
-  background: linear-gradient(135deg, #16A34A, #15803D);
+  background: linear-gradient(135deg, #1E7A35, #1A6128);
   color: white;
   border: none;
   border-radius: var(--radio-pill);
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 3px 12px rgba(22, 163, 74, 0.35);
+  box-shadow: 0 3px 12px rgba(30, 122, 53, 0.35);
   transition: transform var(--transicion), box-shadow var(--transicion), opacity var(--transicion);
 }
 
 .btnComenzar:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(22, 163, 74, 0.4);
+  box-shadow: 0 6px 18px rgba(30, 122, 53, 0.4);
 }
 
 .btnComenzar:active {
