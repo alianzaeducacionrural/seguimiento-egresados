@@ -25,9 +25,6 @@ export function CampoCheckbox({ label, nombre, valor = [], onChange, opciones = 
               onClick={() => toggle(op.valor)}
               className={`${styles.opcion} ${activa ? styles.activa : ''}`}
             >
-              <span className={styles.caja}>
-                {activa && <span className={styles.check}>✓</span>}
-              </span>
               {op.etiqueta}
             </button>
           )

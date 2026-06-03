@@ -16,7 +16,6 @@ export function CampoRadio({ label, nombre, valor, onChange, opciones = [], requ
             onClick={() => onChange(nombre, op.valor)}
             className={`${styles.opcion} ${valor === op.valor ? styles.activa : ''}`}
           >
-            <span className={styles.indicador} />
             {op.etiqueta}
           </button>
         ))}

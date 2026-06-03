@@ -8,8 +8,7 @@
 .opcion {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.55rem 1.1rem;
+  padding: 0.55rem 1.25rem;
   border: 2px solid var(--borde);
   border-radius: var(--radio-pill);
   background: var(--superficie);
@@ -19,6 +18,7 @@
   cursor: pointer;
   transition: all var(--transicion);
   user-select: none;
+  line-height: 1;
 }
 
 .opcion:hover {
@@ -29,23 +29,8 @@
 
 .opcion.activa {
   border-color: var(--verde);
-  background: var(--verde-light);
-  color: var(--verde-dark);
+  background: linear-gradient(135deg, #16A34A, #15803D);
+  color: white;
   font-weight: 600;
-}
-
-.indicador {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid currentColor;
-  flex-shrink: 0;
-  position: relative;
-  transition: background var(--transicion);
-}
-
-.opcion.activa .indicador {
-  background: var(--verde);
-  border-color: var(--verde);
-  box-shadow: inset 0 0 0 2.5px var(--verde-light);
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
 }

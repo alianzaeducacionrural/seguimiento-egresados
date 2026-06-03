@@ -8,8 +8,7 @@
 .opcion {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.55rem 1.1rem;
+  padding: 0.55rem 1.25rem;
   border: 2px solid var(--borde);
   border-radius: var(--radio);
   background: var(--superficie);
@@ -19,41 +18,19 @@
   cursor: pointer;
   transition: all var(--transicion);
   user-select: none;
+  line-height: 1;
 }
 
 .opcion:hover {
   border-color: var(--verde);
   color: var(--verde-dark);
+  background: var(--verde-light);
 }
 
 .opcion.activa {
   border-color: var(--verde);
-  background: var(--verde-light);
-  color: var(--verde-txt);
-  font-weight: 600;
-}
-
-.caja {
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
-  border: 2px solid currentColor;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  font-size: 0;
-  transition: background var(--transicion), border-color var(--transicion);
-}
-
-.opcion.activa .caja {
-  background: var(--verde);
-  border-color: var(--verde);
-}
-
-.check {
-  font-size: 10px;
+  background: linear-gradient(135deg, #16A34A, #15803D);
   color: white;
-  line-height: 1;
-  font-weight: 700;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
 }
