@@ -2,191 +2,381 @@
 ## Sistema de Seguimiento a Egresados — Universidad en el Campo
 ## Comité de Cafeteros de Caldas
 
-Este archivo es el plan de trabajo mes a mes para Claude Code.
+Este archivo es el resumen ejecutivo del plan de trabajo para Claude Code.
 El contexto técnico completo está en `PROYECTO.md`.
 El código de Google Apps Script está en `GAS.md`.
 
 ---
 
-## Resumen general
+## Estructura general
 
-9 meses divididos en 4 fases. Al cerrar cada mes se hace un despliegue
-en GitHub Pages para mostrar avances reales.
+9 meses divididos en 4 fases. Al cerrar cada mes se despliega en GitHub Pages.
 
-| Mes | Fase | Actividad | Estado |
-|---|---|---|---|
-| 1 | Fundamentos | Diseño y arquitectura | ✅ Completo |
-| 2 | Fundamentos | Diseño del formulario | ✅ Completo |
-| 3 | Desarrollo | Setup + implementación completa | ✅ Completo |
-| 4 | Desarrollo | Activación, configuración y pruebas | ← **siguiente** |
-| 5 | Dashboard | Refinamiento del panel admin | Pendiente |
-| 6 | Dashboard | Gráficas avanzadas y filtros cruzados | Pendiente |
-| 7 | Cierre | Vistas por institución + exportación | Pendiente |
-| 8 | Cierre | Prueba interna con el equipo | Pendiente |
-| 9 | Cierre | Piloto real + lanzamiento oficial | Pendiente |
+| Mes | Fase | Actividad |
+|---|---|---|
+| 1 | Fundamentos | Diseño y arquitectura ✓ |
+| 2 | Fundamentos | Diseño del formulario ✓ |
+| 3 | Desarrollo | Setup del proyecto + GAS ← **empezamos aquí** |
+| 4 | Desarrollo | Formulario — Secciones 1 a 4 |
+| 5 | Desarrollo | Formulario — Secciones 5 a 8 + envío |
+| 6 | Dashboard | Panel admin — estructura y datos |
+| 7 | Dashboard | Panel admin — gráficas e indicadores |
+| 8 | Cierre | Vistas por institución + pulimiento |
+| 9 | Cierre | Pruebas, ajustes y lanzamiento |
 
 ---
 
-## Mes 3 — Setup + implementación completa ✅
+## Arquitectura general
 
-### Qué se hizo
+- **Una sola app React + Vite** en la raíz del repositorio.
+- **Un solo `vite.config.js`**, un solo `package.json`, un solo `.env`.
+- React Router maneja las rutas del formulario y del admin.
+- GitHub Actions construye desde la raíz y despliega en GitHub Pages.
 
-Se avanzó más de lo planeado originalmente. En lugar de dos aplicaciones
-Vite separadas, se construyó una **app React unificada** en la raíz del
-repositorio con React Router.
+**Rutas:**
 
-**Estructura real del proyecto:**
-```
-seguimiento-egresados/
-├── src/
-│   ├── App.jsx                    — Router raíz + detección de token
-│   ├── formulario/
-│   │   ├── Formulario.jsx         — Navegación entre secciones y submit
-│   │   ├── sections/Section1…8   — Las 8 secciones con lógica condicional
-│   │   ├── hooks/useFormulario.js — Estado global, validación, envío
-│   │   ├── utils/api.js           — cargarListas(), enviarFormulario()
-│   │   ├── utils/municipios.js    — 27 municipios de Caldas (hardcodeado)
-│   │   └── utils/validar.js       — validarSeccion(n, datos)
-│   └── admin/
-│       ├── views/Dashboard.jsx    — Métricas + gráficas Recharts
-│       ├── views/TablaEgresados   — Tabla con búsqueda y filtros
-│       ├── views/DetalleEgresado  — Detalle completo de un registro
-│       ├── views/Instituciones    — Lista de IE con egresados
-│       ├── hooks/useEgresados.js  — Carga desde GAS (con o sin token)
-│       └── components/NavBar.jsx  — Navegación sticky del admin
-├── gas/Code.gs                    — Backend completo en Google Apps Script
-├── vite.config.js                 — base: '/seguimiento-egresados/'
-├── package.json                   — Dependencias unificadas
-└── .github/workflows/deploy.yml  — CI/CD a GitHub Pages
-```
-
-**Rutas de la app:**
 | Ruta | Vista |
 |---|---|
-| `/seguimiento-egresados/` | Formulario de 8 secciones |
-| `/seguimiento-egresados/admin` | Dashboard del admin |
-| `/seguimiento-egresados/admin/egresados` | Tabla de egresados |
-| `/seguimiento-egresados/admin/egresados/:id` | Detalle de un egresado |
-| `/seguimiento-egresados/admin/instituciones` | Instituciones registradas |
-| `/seguimiento-egresados/?token=xxx` | Vista de institución (sin NavBar) |
+| `/` | Formulario para egresados |
+| `/admin` | Dashboard del panel admin |
+| `/admin/egresados` | Tabla de registros con filtros |
+| `/admin/egresados/:id` | Detalle de un egresado |
+| `/admin/instituciones` | Tokens y enlaces por institución |
+| `/admin/institucion?token=xxx` | Vista reducida por institución |
 
-**Para correr en desarrollo:**
-```bash
-npm install
-npm run dev   # http://localhost:5173
-```
-
-### Lo que queda pendiente de este mes
-- Desplegar el GAS en Google Apps Script (manual, requiere acceso al Sheets)
-- Activar GitHub Pages en el repositorio
-- Agregar el secret `VITE_GAS_URL` en GitHub
+**URLs en producción:**
+- Formulario: `https://alianzaeducacionrural.github.io/seguimiento-egresados/`
+- Admin: `https://alianzaeducacionrural.github.io/seguimiento-egresados/admin`
 
 ---
 
-## Mes 4 — Activación, configuración y pruebas
+## Mes 3 — Setup del proyecto + GAS
 
 ### Objetivo
-Dejar el sistema completamente operativo: GAS desplegado, GitHub Pages activo,
-formulario enviando datos reales a Google Sheets, y admin mostrando esos datos.
+Repositorio inicializado, app corriendo en GitHub Pages y GAS desplegado.
 
 ### Acciones
 
-**1. Desplegar Google Apps Script**
-
-- Abrir el Google Sheet → **Extensiones → Apps Script**
-- Borrar el código por defecto
-- Copiar el contenido de `gas/Code.gs`
-- **Implementar → Nueva implementación**
-  - Tipo: Aplicación web
-  - Ejecutar como: Yo
-  - Acceso: Cualquier usuario (anónimo)
-- Copiar la URL generada (ya está en `.env` y en CLAUDE.md, verificar que coincida)
-
-**2. Configurar las pestañas del Google Sheets**
-
-La pestaña `respuestas` se crea automáticamente con el primer envío.
-Las otras tres hay que crearlas manualmente:
-
-- **`instituciones`** — columnas: `municipio`, `nombre`, `id`, `token`, `url`
-  Llenar con las instituciones educativas del programa por municipio.
-
-- **`universidades`** — columna: `nombre`
-  Llenar con las universidades aliadas del programa UEC.
-
-- **`config`** — columnas: `clave`, `valor`
-  Agregar la fila: `dominio_github_pages` | `https://alianzaeducacionrural.github.io/seguimiento-egresados/`
-
-**3. Generar tokens para las instituciones**
-
-Desde el editor de Google Apps Script, ejecutar manualmente la función:
+**1. Inicializar la app React + Vite en la raíz**
+```bash
+# Desde la raíz del repositorio (ya clonado)
+npm create vite@latest . -- --template react
 ```
-generarTokensFaltantes()
+
+**2. Instalar dependencias**
+```bash
+npm install
+npm install react-router-dom
+npm install recharts
 ```
-Esto llena las columnas `id`, `token` y `url` para cada institución en el Sheets.
 
-**4. Activar GitHub Pages**
+**3. Configurar vite.config.js**
+```js
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-En el repositorio de GitHub → **Settings → Pages**:
-- Source: **Deploy from a branch**
-- Branch: `gh-pages` / `/ (root)`
-- Guardar
+export default defineConfig({
+  plugins: [react()],
+  base: '/seguimiento-egresados/',
+})
+```
 
-El workflow se dispara automáticamente en cada push a `main`.
+**4. Crear .env en la raíz**
+```env
+VITE_GAS_URL=https://script.google.com/macros/s/XXXXXXXXX/exec
+```
+Reemplazar con la URL del Web App de GAS una vez desplegado.
 
-**5. Agregar el secret de GitHub Actions**
+**5. Crear .gitignore**
+```
+node_modules/
+dist/
+.env
+.DS_Store
+```
 
-En el repositorio de GitHub → **Settings → Secrets and variables → Actions**:
-- Nombre: `VITE_GAS_URL`
-- Valor: URL del Web App de GAS (la misma que está en `.env`)
+**6. Crear el workflow GitHub Actions**
 
-Sin este secret el build de producción falla silenciosamente.
+`.github/workflows/deploy.yml`:
+```yaml
+name: Deploy to GitHub Pages
 
-**6. Verificar el primer deploy**
+on:
+  push:
+    branches: [main]
 
-Hacer un push cualquiera a `main` y confirmar que:
-- El workflow en **Actions** termina verde
-- La rama `gh-pages` se actualiza
-- `https://alianzaeducacionrural.github.io/seguimiento-egresados/` carga el formulario
+permissions:
+  contents: write
 
-**7. Prueba de extremo a extremo**
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-- [ ] Abrir el formulario en producción
-- [ ] Diligenciar las 8 secciones con datos de prueba
-- [ ] Verificar que aparece una fila nueva en la pestaña `respuestas` del Sheets
-- [ ] Abrir el admin en `/admin` y verificar que el registro aparece
-- [ ] Abrir el detalle del registro y verificar que todos los campos son correctos
-- [ ] Probar la vista de institución con un token real: `/seguimiento-egresados/?token=xxx`
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-**8. Prueba del formulario en móvil**
+      - name: Install dependencies
+        run: npm install
 
-- [ ] Abrir en un teléfono Android / iOS
-- [ ] Verificar que todos los campos se ven bien
-- [ ] Verificar que los selects y checkboxes funcionan con toque
+      - name: Build
+        run: npm run build
 
-**9. Correcciones tras prueba**
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+```
 
-Aplicar los ajustes que surjan de los puntos 7 y 8 antes de dar el mes por cerrado.
+**7. Copiar el código de GAS**
+- Abrir el Google Sheet → Extensiones → Apps Script.
+- Borrar contenido por defecto.
+- Copiar el bloque de código del archivo `GAS.md`.
+- Guardar y hacer nueva implementación como Web App:
+  - Ejecutar como: yo
+  - Acceso: cualquier usuario
+- Copiar la URL generada → pegarla en `.env` como `VITE_GAS_URL`.
+
+**8. Primer push**
+```bash
+git add .
+git commit -m "Mes 3: setup inicial del proyecto"
+git push origin main
+```
 
 ### Entregable
-Sistema completamente operativo en producción:
-- `https://alianzaeducacionrural.github.io/seguimiento-egresados/` → formulario activo
-- `https://alianzaeducacionrural.github.io/seguimiento-egresados/admin` → admin activo
-- GAS respondiendo a peticiones reales
-- Al menos un registro de prueba completo en Google Sheets
+- `https://alianzaeducacionrural.github.io/seguimiento-egresados/` → activo
+- GAS respondiendo a `GET /?action=listas`
 
 ---
 
-## Meses 5–9 — Roadmap (sin ejecución detallada)
+## Mes 4 — Formulario: Secciones 1 a 4
 
-> La ejecución detallada de estos meses se define cuando llegue el momento.
+### Objetivo
+Formulario navegable con las primeras 4 secciones, validaciones y
+lógica condicional, desplegado en GitHub Pages.
 
-| Mes | Objetivo principal |
-|---|---|
-| **5** | Refinamiento del panel admin: paginación, exportación CSV, mejoras de UX en la tabla |
-| **6** | Gráficas avanzadas en el Dashboard: filtros cruzados por municipio/institución/año |
-| **7** | Vista por institución con gráficas propias; enlace de tokens desde el panel admin |
-| **8** | Prueba interna con el equipo del Comité; ajustes según feedback real |
-| **9** | Piloto con instituciones reales, lanzamiento oficial, documentación de uso |
+### Acciones
+
+**1. Estructura de carpetas en `src/`**
+```
+src/
+├── components/
+│   ├── CampoTexto.jsx
+│   ├── CampoSelect.jsx
+│   ├── CampoRadio.jsx
+│   ├── CampoCheckbox.jsx
+│   ├── CampoFecha.jsx
+│   ├── CampoTextarea.jsx
+│   ├── BarraProgreso.jsx
+│   ├── BotonSiguiente.jsx
+│   ├── BotonAnterior.jsx
+│   └── ModalConsentimiento.jsx
+├── sections/
+│   ├── Seccion1.jsx  →  Seccion8.jsx
+├── admin/
+│   ├── components/
+│   └── views/
+├── hooks/
+│   ├── useFormulario.js
+│   ├── useListas.js
+│   └── useEgresados.js
+├── utils/
+│   ├── api.js
+│   ├── validaciones.js
+│   └── municipios.js
+├── App.jsx
+└── main.jsx
+```
+
+**2. Municipios en `src/utils/municipios.js`**
+```js
+export const MUNICIPIOS_CALDAS = [
+  'Aguadas','Anserma','Aranzazu','Belalcázar','Chinchiná',
+  'Filadelfia','La Dorada','La Merced','Manizales','Manzanares',
+  'Marmato','Marquetalia','Marulanda','Neira','Norcasia',
+  'Pácora','Palestina','Pensilvania','Riosucio','Risaralda',
+  'Salamina','Samaná','San José','Supía','Victoria',
+  'Villamaría','Viterbo',
+];
+```
+
+**3. Hook `useListas`** — al montar la app hace `GET /?action=listas`
+y guarda municipios, instituciones y universidades en estado global.
+
+**4. Sección 1** — tipo documento, número, nombre, fecha nacimiento,
+municipio residencia (select hardcodeado + campo "Otro"), correo,
+teléfono, zona rural/urbana.
+
+**5. Sección 2** — lógica condicional completa según `PROYECTO.md`.
+Municipio bachillerato: hardcodeado. IE bachillerato: dependiente de municipio,
+desde GAS. Universidad: select desde GAS. Años: 2010 → año actual.
+
+**6. Sección 3** — situación laboral. Preguntas 3.3–3.7 visibles
+solo si trabaja o ha trabajado.
+
+**7. Sección 4** — emprendimiento. Tipo visible solo si ha emprendido.
+
+**8. Diseño mobile-first**, sin librerías de UI externas. CSS Modules.
+
+### Entregable
+Formulario con secciones 1–4 navegables y validadas en GitHub Pages.
+
+---
+
+## Mes 5 — Formulario: Secciones 5 a 8 + envío
+
+### Objetivo
+Formulario 100% funcional con envío real a Google Sheets.
+
+### Acciones
+
+**1. Sección 5** — PPPS. Área y aplicación visibles si implementó PPPS.
+
+**2. Sección 6** — impacto social. Razón visible si empalme = Sí.
+
+**3. Sección 7** — retroalimentación. Estrategias checkbox múltiple,
+aspectos y comentarios en textarea.
+
+**4. Sección 8** — contacto y autorización.
+- Checkbox de consentimiento requerido para enviar.
+- Enlace "Ver texto completo" abre modal con la autorización íntegra
+  (Ley 1581 de 2012, texto del formulario físico en `docs/`).
+
+**5. Integración con GAS**
+```js
+// src/utils/api.js
+export async function enviarFormulario(datos) {
+  const res = await fetch(import.meta.env.VITE_GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(datos),
+  });
+  return res.json();
+}
+```
+Nota: `Content-Type: text/plain` es requisito de GAS para recibir POST.
+
+**6. Pantalla de confirmación** tras envío exitoso.
+
+**7. Manejo de errores** de red con mensajes claros al usuario.
+
+### Entregable
+Formulario completo con envío real a Google Sheets.
+
+---
+
+## Mes 6 — Panel admin: estructura y datos
+
+### Objetivo
+Panel admin con navegación, tabla de egresados y detalle individual.
+
+### Acciones
+
+**1. React Router** — configurar todas las rutas del admin en `App.jsx`.
+
+**2. Layout del admin** — Sidebar + Header compartidos en rutas `/admin/*`.
+
+**3. Vista tabla `/admin/egresados`**
+- Columnas: nombre, municipio, IE, año graduación, trabaja, fecha envío.
+- Filtros: municipio, institución, año de graduación, búsqueda por nombre.
+- Paginación de 20 registros por página.
+- Botón "Exportar CSV".
+
+**4. Vista detalle `/admin/egresados/:id`**
+- Todas las respuestas organizadas por sección.
+- Botón volver.
+
+**5. Vista instituciones `/admin/instituciones`**
+- Tabla con municipio, institución, token y botón "Copiar enlace".
+
+**6. Hook `useEgresados`** — hace `GET /?action=registros` y expone
+los datos al panel admin.
+
+### Entregable
+Panel admin con tabla, detalle e instituciones con datos reales.
+
+---
+
+## Mes 7 — Panel admin: gráficas e indicadores
+
+### Objetivo
+Dashboard con métricas clave y gráficas interactivas (Recharts).
+
+### Acciones
+
+**1. Métricas principales**
+- Total egresados, % continuaron estudios, % estudió con UEC,
+  % trabaja actualmente, % ha emprendido.
+
+**2. Gráficas con Recharts**
+- Distribución por municipio → BarChart horizontal
+- Sector laboral → PieChart
+- Continuidad educativa → BarChart agrupado
+- Tipo de emprendimiento → PieChart
+- ¿Recomendaría el modelo? → PieChart
+- Egresados por año de graduación → LineChart
+
+**3. Filtros cruzados** — filtrar todas las gráficas por municipio,
+institución y año de graduación.
+
+**4. Vista institución `/admin/institucion?token=xxx`**
+- Panel reducido con las mismas gráficas filtradas por token.
+- Sin sidebar. Header con nombre de la institución.
+- Token inválido → mensaje de error.
+
+**5. Diseño responsive** para tablet y móvil.
+
+### Entregable
+Dashboard completo con gráficas, filtros y vista por institución.
+
+---
+
+## Mes 8 — Pulimiento y pruebas internas
+
+### Objetivo
+Sistema completo revisado y probado con el equipo del Comité.
+
+### Acciones
+
+**1. Revisión del formulario** en móvil, tablet y escritorio.
+**2. Verificar lógica condicional** completa en todas las secciones.
+**3. Verificar datos** en Google Sheets tras envíos de prueba.
+**4. Revisión del admin** — gráficas, filtros, exportación, tokens.
+**5. Estados de carga** en todas las peticiones a GAS.
+**6. Manejo de error** si GAS no responde.
+**7. Prueba interna** con el equipo del Comité y ajustes finales.
+**8. Ejecutar `generarTokensFaltantes()`** en GAS para todas las instituciones.
+
+### Entregable
+Sistema completo probado internamente, tokens generados para todas las IEs.
+
+---
+
+## Mes 9 — Lanzamiento
+
+### Objetivo
+Lanzamiento oficial con instituciones piloto y documentación entregada.
+
+### Acciones
+
+**1. Piloto** con 2–3 instituciones. Recoger feedback.
+**2. Ajustes finales** según feedback.
+**3. Compartir enlaces** a instituciones desde el panel admin.
+**4. Documentación de uso** en un `.md`:
+   - Cómo llenar el formulario (egresados)
+   - Cómo ver datos de la institución (coordinadores)
+   - Cómo gestionar el Sheets y ejecutar GAS (Comité)
+**5. Dominio personalizado** (opcional) — configurar en GitHub Pages
+   y actualizar `dominio_github_pages` en la pestaña `config` del Sheets.
+**6. Lanzamiento oficial** con todas las instituciones del programa.
+
+### Entregable
+Sistema en producción + documentación de uso entregada.
 
 ---
 
@@ -195,18 +385,17 @@ Sistema completamente operativo en producción:
 | Recurso | URL |
 |---|---|
 | Repositorio | https://github.com/alianzaeducacionrural/seguimiento-egresados |
-| Formulario (producción) | https://alianzaeducacionrural.github.io/seguimiento-egresados/ |
-| Panel admin (producción) | https://alianzaeducacionrural.github.io/seguimiento-egresados/admin |
+| Formulario | https://alianzaeducacionrural.github.io/seguimiento-egresados/ |
+| Panel admin | https://alianzaeducacionrural.github.io/seguimiento-egresados/admin |
 | Google Sheets | https://docs.google.com/spreadsheets/d/1vDxjtAe2bUPx2gUt1HMI2rlx6r1FfGBYKnv6BjaJd0k |
 
 ---
 
-## Archivos de contexto disponibles
+## Archivos de contexto
 
 | Archivo | Contenido |
 |---|---|
-| `PROYECTO.md` | Arquitectura, stack, diseño del formulario sección por sección, API de GAS |
-| `GAS.md` | Código completo de Google Apps Script listo para copiar y desplegar |
-| `CLAUDE.md` | Guía técnica para Claude Code: comandos, estructura, convenciones |
-| `docs/PLAN.md` | Este archivo — plan de trabajo mes a mes |
-| `docs/Anexo 5. Seguimiento de Egresados.pdf` | Formulario físico original de referencia |
+| `PROYECTO.md` | Arquitectura, stack, estructura, formulario completo, API |
+| `GAS.md` | Código completo de Google Apps Script |
+| `PLAN.md` | Este archivo — plan mes a mes con acciones concretas |
+| `docs/Anexo_5__Seguimiento_de_Egresados.pdf` | Formulario físico original |

@@ -1,35 +1,85 @@
-.estado {
-  padding: 3rem 1.5rem;
-  text-align: center;
-  color: #64748b;
-  font-size: 0.9rem;
-}
-
-.errorAcceso {
-  padding: 3rem 1.5rem;
-  text-align: center;
-  color: #dc2626;
-  font-size: 0.9rem;
-}
-
-.vistaInstitucion {
+.main {
   min-height: 100vh;
-  background: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1rem 2rem;
+  gap: 1.5rem;
 }
 
-.cabInstitucion {
-  background: #1b4332;
-  color: #fff;
-  padding: 1.25rem 1.5rem;
+.header {
+  text-align: center;
 }
 
-.cabInstitucion h1 {
-  font-size: 1.1rem;
+.logo {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 0.75rem;
+}
+
+.header h1 {
+  font-size: 1.6rem;
+  color: #2d5a1b;
   font-weight: 700;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.25rem;
 }
 
-.cabInstitucion p {
-  font-size: 0.82rem;
-  color: #d1fae5;
+.header p {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.tarjeta {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.tarjeta h2 {
+  font-size: 1.2rem;
+  color: #1a1a1a;
+  margin-bottom: 0.75rem;
+}
+
+.tarjeta p {
+  color: #4b5563;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.estado {
+  font-size: 0.875rem;
+  min-height: 1.25rem;
+}
+
+.cargando {
+  color: #9ca3af;
+}
+
+.ok {
+  color: #16a34a;
+  font-weight: 500;
+}
+
+.error {
+  color: #dc2626;
+}
+
+.footer {
+  font-size: 0.85rem;
+}
+
+.footer a {
+  color: #6b7280;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: #2d5a1b;
+  text-decoration: underline;
 }

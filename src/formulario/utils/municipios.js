@@ -1,9 +1,0 @@
-export const MUNICIPIOS = [
-  'Aguadas', 'Anserma', 'Aranzazu', 'Belalcázar', 'Chinchiná',
-  'Filadelfia', 'La Dorada', 'La Merced', 'Manizales', 'Manzanares',
-  'Marmato', 'Marquetalia', 'Marulanda', 'Neira', 'Norcasia',
-  'Pácora', 'Palestina', 'Pensilvania', 'Riosucio', 'Risaralda',
-  'Salamina', 'Samaná', 'San José', 'Supía', 'Victoria',
-  'Villamaría', 'Viterbo',
-  'Otro municipio',
-]

@@ -2,158 +2,119 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
----
+## Project Overview
 
-## Proyecto
+Graduate tracking platform ("Seguimiento a Egresados") for the **"La Universidad en el Campo" (UEC)** rural education program run by Comité de Cafeteros de Caldas, Colombia. It consists of a public multi-step form for graduates to self-report and an admin dashboard for program coordinators to view results. All data is stored in Google Sheets; the backend is a Google Apps Script (GAS) Web App.
 
-Plataforma web de seguimiento a egresados del programa **La Universidad en el Campo** del Comité de Cafeteros de Caldas. El formulario físico de referencia está en [docs/Anexo 5. Seguimiento de Egresados.pdf](docs/Anexo%205.%20Seguimiento%20de%20Egresados.pdf) y la especificación completa en [PROYECTO.md](PROYECTO.md).
-
----
-
-## Stack
-
-| Capa | Tecnología |
-|---|---|
-| Frontend | React + Vite (JSX), sin librerías de UI externas en el formulario |
-| API / Backend | Google Apps Script (GAS) Web App |
-| Base de datos | Google Sheets (4 pestañas) |
-| Despliegue | GitHub Pages vía GitHub Actions |
-| Gráficas (admin) | Recharts |
-
----
-
-## Comandos
-
-App unificada en la raíz del repositorio:
+## Commands
 
 ```bash
-npm install
-npm run dev     # servidor de desarrollo — http://localhost:5173
-npm run build   # build para producción (output en dist/)
-npm run preview # previsualizar el build
+npm install        # Install dependencies
+npm run dev        # Start dev server (localhost:5173)
+npm run build      # Build for production to dist/
+npm run lint       # ESLint
+npm run preview    # Preview production build locally
 ```
 
-El despliegue a GitHub Pages lo hace el workflow `.github/workflows/deploy.yml` automáticamente en cada push a `main`.
+Deployment is automated via GitHub Actions (`.github/workflows/deploy.yml`) to GitHub Pages at `https://alianzaeducacionrural.github.io/seguimiento-egresados/`.
 
----
+## Environment
 
-## Rutas
+Create a `.env` file at the project root:
 
-| Ruta | Vista |
-|---|---|
-| `/seguimiento-egresados/` | Formulario de 8 secciones para egresados |
-| `/seguimiento-egresados/admin` | Dashboard (admin completo) |
-| `/seguimiento-egresados/admin/egresados` | Tabla de egresados |
-| `/seguimiento-egresados/admin/egresados/:id` | Detalle de un egresado |
-| `/seguimiento-egresados/admin/instituciones` | Instituciones con egresados |
-| `/seguimiento-egresados/?token=xxx` | Vista de institución (sin NavBar) |
-
----
-
-## Arquitectura
-
-```
-src/App.jsx   →  BrowserRouter(basename="/seguimiento-egresados/")
-              →  Route "/"         → Formulario
-              →  Route "/admin/*"  → AdminWrapper (carga todos los registros)
-              →  ?token=xxx        → VistaInstitucion (sin Router Routes)
-
-src/formulario/  →  GET  VITE_GAS_URL?action=listas    (carga selects al montar)
-                 →  POST VITE_GAS_URL                   (envío del formulario)
-
-src/admin/       →  GET  VITE_GAS_URL?action=registros          (todos los registros)
-                 →  GET  VITE_GAS_URL?action=registros&token=xxx (filtrado por institución)
-
-gas/Code.gs      →  Google Sheets (4 pestañas: respuestas, instituciones, universidades, config)
-```
-
-**Variable de entorno** (configurada en `.env` local; usar secret `VITE_GAS_URL` en GitHub para producción):
 ```env
-VITE_GAS_URL=https://script.google.com/macros/s/AKfycbw2EVV2WxhZ8bI4RxJSqLCLJyfzuaE_FIugP16Pbe4ewAQm6qHRh7M0Wd1VRWuBgCZGMA/exec
+VITE_GAS_URL=https://script.google.com/macros/s/<DEPLOYMENT_ID>/exec
 ```
 
----
+The GAS URL is the "current web app URL" from the Apps Script deployment. Both the form (`src/formulario/utils/api.js`) and admin (`src/admin/utils/api.js`) read this variable.
 
-## Estructura `src/`
+## Architecture
+
+```
+React (Vite, GitHub Pages)
+   ├── /                    → 8-section graduate survey form
+   └── /admin/*             → Admin dashboard (protected by institution token)
+
+         ↓ fetch (GET/POST)
+
+Google Apps Script Web App  ←→  Google Sheets (4 sheets)
+  doGet(?action=listas)           respuestas   — form submissions
+  doGet(?action=registros         instituciones — tokens per institution
+        &token=xxx)               universidades — university list
+  doPost()                        config        — global settings
+```
+
+The app lives under `basename="/seguimiento-egresados/"` (set in both `src/App.jsx` and `vite.config.js`).
+
+## Routes
+
+| Path | Component | Description |
+|---|---|---|
+| `/` | `Formulario` | 8-section graduate form (public) |
+| `/admin` | `Dashboard` | Metrics & charts |
+| `/admin/egresados` | `TablaEgresados` | Searchable/filterable table |
+| `/admin/egresados/:id` | `DetalleEgresado` | Individual record detail |
+| `/admin/instituciones` | `Instituciones` | Institution list with shareable token links |
+| `/admin/institucion?token=xxx` | filtered `TablaEgresados` | Institution-scoped view |
+
+The admin section detects a `?token=xxx` query param to filter records per institution. No login — auth is token-based.
+
+## Source Structure
 
 ```
 src/
-  App.jsx                    — Router raíz, detección de token, AdminWrapper
-  App.module.css             — Estilos de estados de carga y VistaInstitucion
-  formulario/
-    Formulario.jsx           — Navegación entre secciones, submit
-    Formulario.module.css
-    sections/Section1…8.jsx  — Un componente por sección; comparten Section.module.css
-    hooks/useFormulario.js   — Estado global, validación por sección y envío
-    utils/municipios.js      — 27 municipios de Caldas (hardcodeado)
-    utils/api.js             — cargarListas(), enviarFormulario()
-    utils/validar.js         — validarSeccion(n, datos) → objeto de errores
-    components/ProgressBar   — Barra de progreso de sección
-    components/ConsentModal  — Modal autorización Ley 1581 (Sección 8)
-  admin/
-    views/Dashboard.jsx      — Métricas clave y gráficas Recharts
-    views/TablaEgresados.jsx — Tabla con búsqueda y filtro; clic → /admin/egresados/:id
-    views/DetalleEgresado.jsx— Todas las respuestas de un registro
-    views/Instituciones.jsx  — Instituciones derivadas de registros
-    hooks/useEgresados.js    — useEgresados(token) carga desde GAS; null = todos
-    utils/api.js             — cargarRegistros(token)
-    utils/formatear.js       — formatearFecha, formatearBooleano, formatearLabel + mapas
-    components/NavBar.jsx    — Navegación sticky del admin
+├── App.jsx                   # Root router
+├── formulario/               # Graduate self-report form
+│   ├── Formulario.jsx        # Section navigation + submit
+│   ├── sections/             # Section1.jsx … Section8.jsx
+│   ├── hooks/useFormulario.js
+│   └── utils/
+│       ├── api.js            # cargarListas(), enviarFormulario()
+│       ├── municipios.js     # 27 Caldas municipalities (hardcoded)
+│       └── validar.js        # validarSeccion(n, datos)
+└── admin/                    # Admin dashboard
+    ├── views/                # Dashboard, TablaEgresados, DetalleEgresado, Instituciones
+    ├── components/NavBar.jsx
+    ├── hooks/useEgresados.js # cargarRegistros(token) from GAS
+    └── utils/
+        ├── api.js            # cargarRegistros(token)
+        └── formatear.js      # Date, boolean, label formatting helpers
 ```
 
-**Datos hardcodeados** (no vienen de GAS):
-- 27 municipios de Caldas en `src/formulario/utils/municipios.js`
+## Google Apps Script — Critical Notes
 
-**Datos desde GAS** (`action=listas`):
-- Instituciones educativas por municipio → select Section2
-- Lista de universidades → select Section2
+See `GAS.md` for full backend documentation and `gas/Code.gs` for the source.
 
----
+- **CORS:** GAS does not support preflight requests. The frontend must send POST with `Content-Type: text/plain` (not `application/json`) to avoid triggering a preflight. The body is still JSON-stringified.
+- **Array fields:** GAS flattens repeated-value fields (checkboxes) by joining with `, ` via the `aplanar()` helper before writing to Sheets.
+- **Token generation:** Run `generarTokensFaltantes()` manually from the Apps Script editor after adding new institutions to the `instituciones` sheet.
+- **GET action routing:** `doGet(e)` switches on `e.parameter.action` (`listas` or `registros`).
 
-## GAS — notas críticas
+## Form — Section Summary
 
-El código completo de `gas/Code.gs` está en [GAS.md](GAS.md). Puntos clave:
-
-- **POST con CORS:** GAS no acepta `Content-Type: application/json` desde orígenes externos. El formulario envía body como `text/plain`; GAS parsea con `JSON.parse(e.postData.contents)`. No cambiar este patrón.
-- **Arrays → Sheets:** Checkboxes se aplanan a string separado por comas con `aplanar()`. Al leerlos desde el admin hacer `split(', ')`.
-- **Encabezados automáticos:** `guardarRespuesta()` crea encabezados la primera vez si la pestaña `respuestas` está vacía.
-- **Nueva implementación requerida:** Cada cambio en `Code.gs` requiere nueva implementación en GAS (no editar la existente).
-- **`generarTokensFaltantes()`:** Función manual para crear tokens de instituciones nuevas. Lee `dominio_github_pages` de la pestaña `config`.
-
----
-
-## Convenciones de código
-
-- Componentes: PascalCase (`Section1.jsx`, `ProgressBar.jsx`)
-- Hooks: prefijo `use` (`useFormulario.js`)
-- Utilidades: camelCase (`formatear.js`)
-- Estilos: CSS Modules (`.module.css`) por componente, diseño mobile-first
-
----
-
-## Lógica condicional del formulario (resumen)
-
-| Campo | Se muestra si... |
+| Section | Topic |
 |---|---|
-| `s1_municipio_otro` | `s1_municipio_residencia === "Otro municipio"` |
-| `s2_ie_bachillerato` | `s2_municipio_bachillerato` tiene valor |
-| `s2_razon_no_continuo` | `s2_continuo_superior === false` |
-| `s2_nivel_uec` … `s2_anio_grad_uec` | `s2_estudio_uec === true` |
-| `s2_continuo_postgrado` | `s2_estudio_uec === true` |
-| `s2_nivel_postgrado` … `s2_programa_postgrado` | `s2_continuo_postgrado === true` |
-| `s2_razon_no_postgrado` | `s2_continuo_postgrado === false && s2_estudio_uec === true` |
-| `s3_linea_insercion` … `s3_formacion_contribuyo` | `s3_trabaja !== "no" \|\| s3_ha_trabajado === true` |
-| `s4_tipo_emprendimiento` | `s4_ha_emprendido === true` |
-| `s5_area_ppps`, `s5_aplica_conocimientos` | `s5_implemento_ppps === true` |
-| `s6_razon_empalme` | `s6_empalme_generacional === true` |
+| 1 | Personal info (ID, name, birthdate, municipality, contact, zone) |
+| 2 | Educational trajectory (high school, university, postgrad) |
+| 3 | Employment (current/past work, sector, relation to UEC) |
+| 4 | Entrepreneurship (projects, rotation fund, business line) |
+| 5 | Pedagogical projects (PPP implementation) |
+| 6 | Social impact (generational overlap) |
+| 7 | Feedback (strategies, improvements, recommendations) |
+| 8 | Contact & data-treatment consent (Law 1581) |
 
----
+Key conditional logic: fields in sections 2–4 are gated behind yes/no questions (e.g., continued studies, currently employed, has an enterprise). `validarSeccion()` in `formulario/utils/validar.js` handles required-field checks per section.
 
-## Vite config
+## Code Conventions
 
-```js
-// vite.config.js (raíz)
-base: '/seguimiento-egresados/'
-```
+- Components: PascalCase (`TablaEgresados.jsx`)
+- Hooks: `use` prefix (`useFormulario.js`, `useEgresados.js`)
+- Utilities: camelCase (`formatear.js`, `validar.js`)
+- Styles: CSS Modules co-located with component (`Component.module.css`)
+- Municipalities list in `formulario/utils/municipios.js` is the single source of truth for the 27 Caldas municipalities — update there if needed.
 
-Después del primer despliegue, actualizar `dominio_github_pages` en la pestaña `config` del Sheets para que `generarTokensFaltantes()` construya las URLs correctas.
+## Key Documentation Files
+
+- `PROYECTO.md` — complete technical specification (routes, API contract, Sheets schema, full form field list)
+- `GAS.md` — Google Apps Script setup, deployment steps, and annotated source
+- `docs/PLAN.md` — 9-month implementation roadmap with current status per phase

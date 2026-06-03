@@ -1,63 +1,69 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { useEgresados } from './admin/hooks/useEgresados'
-import NavBar from './admin/components/NavBar'
-import Dashboard from './admin/views/Dashboard'
-import TablaEgresados from './admin/views/TablaEgresados'
-import DetalleEgresado from './admin/views/DetalleEgresado'
-import Instituciones from './admin/views/Instituciones'
-import Formulario from './formulario/Formulario'
+import { useListas } from './hooks/useListas'
 import styles from './App.module.css'
 
-function VistaInstitucion({ token }) {
-  const { registros, metadatos, cargando, error } = useEgresados(token)
-
-  if (cargando) return <div className={styles.estado}>Cargando...</div>
-  if (error) return <div className={styles.errorAcceso}>{error}</div>
+function Inicio() {
+  const { listas, cargando, error } = useListas()
 
   return (
-    <div className={styles.vistaInstitucion}>
-      <header className={styles.cabInstitucion}>
-        <h1>{metadatos.institucion}</h1>
-        <p>{metadatos.municipio} — {metadatos.total} egresado{metadatos.total !== 1 ? 's' : ''}</p>
+    <main className={styles.main}>
+      <header className={styles.header}>
+        <img src="https://alianzaeducacionrural.github.io/seguimiento-egresados/favicon.svg" alt="" className={styles.logo} />
+        <h1>Universidad en el Campo</h1>
+        <p>Comité de Cafeteros de Caldas</p>
       </header>
-      <TablaEgresados registros={registros} />
-    </div>
+
+      <section className={styles.tarjeta}>
+        <h2>Seguimiento a Egresados</h2>
+        <p>
+          El formulario de seguimiento para egresados del programa estará
+          disponible en breve.
+        </p>
+        <div className={styles.estado}>
+          {cargando && <span className={styles.cargando}>Verificando conexión…</span>}
+          {!cargando && !error && (
+            <span className={styles.ok}>
+              ✓ Sistema activo — {listas?.municipios?.length ?? 0} municipios cargados
+            </span>
+          )}
+          {error && (
+            <span className={styles.error}>Error de conexión: {error}</span>
+          )}
+        </div>
+      </section>
+
+      <footer className={styles.footer}>
+        <a href="/seguimiento-egresados/admin">Panel de administración →</a>
+      </footer>
+    </main>
   )
 }
 
-function AdminWrapper() {
-  const { registros, cargando, error } = useEgresados(null)
-
-  if (cargando) return <div className={styles.estado}>Cargando datos...</div>
-  if (error) return <div className={styles.errorAcceso}>{error}</div>
-
+function Admin() {
   return (
-    <>
-      <NavBar />
-      <Routes>
-        <Route index element={<Dashboard registros={registros} />} />
-        <Route path="egresados" element={<TablaEgresados registros={registros} />} />
-        <Route path="egresados/:id" element={<DetalleEgresado registros={registros} />} />
-        <Route path="instituciones" element={<Instituciones />} />
-      </Routes>
-    </>
+    <main className={styles.main}>
+      <header className={styles.header}>
+        <h1>Panel de Administración</h1>
+        <p>Universidad en el Campo — Comité de Cafeteros de Caldas</p>
+      </header>
+      <section className={styles.tarjeta}>
+        <h2>En desarrollo</h2>
+        <p>El panel administrativo estará disponible en el Mes 6 del plan de implementación.</p>
+      </section>
+      <footer className={styles.footer}>
+        <a href="/seguimiento-egresados/">← Volver al formulario</a>
+      </footer>
+    </main>
   )
 }
 
 export default function App() {
-  const params = new URLSearchParams(window.location.search)
-  const token = params.get('token')
-
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
-      {token ? (
-        <VistaInstitucion token={token} />
-      ) : (
-        <Routes>
-          <Route path="/" element={<Formulario />} />
-          <Route path="/admin/*" element={<AdminWrapper />} />
-        </Routes>
-      )}
+    <BrowserRouter basename="/seguimiento-egresados/">
+      <Routes>
+        <Route path="/" element={<Inicio />} />
+        <Route path="/admin/*" element={<Admin />} />
+      </Routes>
     </BrowserRouter>
   )
 }
