@@ -1,0 +1,75 @@
+.contenedor {
+  padding: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.btnVolver {
+  background: none;
+  border: none;
+  color: #2d6a4f;
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 1rem;
+  font-family: inherit;
+}
+
+.btnVolver:hover {
+  text-decoration: underline;
+}
+
+.titulo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1b4332;
+  margin-bottom: 0.25rem;
+}
+
+.subtitulo {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.seccion {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+  margin-bottom: 1rem;
+}
+
+.tituloSeccion {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1b4332;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.6rem 1.5rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.etiqueta {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.valor {
+  font-size: 0.875rem;
+  color: #374151;
+}

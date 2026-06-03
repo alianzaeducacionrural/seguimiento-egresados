@@ -14,7 +14,7 @@ Plataforma web de seguimiento a egresados del programa **La Universidad en el Ca
 
 | Capa | Tecnología |
 |---|---|
-| Frontend | React + Vite (JSX), sin librerías de UI externas |
+| Frontend | React + Vite (JSX), sin librerías de UI externas en el formulario |
 | API / Backend | Google Apps Script (GAS) Web App |
 | Base de datos | Google Sheets (4 pestañas) |
 | Despliegue | GitHub Pages vía GitHub Actions |
@@ -24,69 +24,89 @@ Plataforma web de seguimiento a egresados del programa **La Universidad en el Ca
 
 ## Comandos
 
-Cada app (`formulario/` y `admin/`) se maneja de forma independiente:
+App unificada en la raíz del repositorio:
 
 ```bash
-cd formulario   # o cd admin
 npm install
-npm run dev     # servidor de desarrollo
+npm run dev     # servidor de desarrollo — http://localhost:5173
 npm run build   # build para producción (output en dist/)
 npm run preview # previsualizar el build
 ```
 
-El despliegue a GitHub Pages lo hace el workflow `.github/workflows/deploy.yml` automáticamente en cada push a `main` — construye ambas apps y publica en la rama `gh-pages`.
+El despliegue a GitHub Pages lo hace el workflow `.github/workflows/deploy.yml` automáticamente en cada push a `main`.
+
+---
+
+## Rutas
+
+| Ruta | Vista |
+|---|---|
+| `/seguimiento-egresados/` | Formulario de 8 secciones para egresados |
+| `/seguimiento-egresados/admin` | Dashboard (admin completo) |
+| `/seguimiento-egresados/admin/egresados` | Tabla de egresados |
+| `/seguimiento-egresados/admin/egresados/:id` | Detalle de un egresado |
+| `/seguimiento-egresados/admin/instituciones` | Instituciones con egresados |
+| `/seguimiento-egresados/?token=xxx` | Vista de institución (sin NavBar) |
 
 ---
 
 ## Arquitectura
 
 ```
-formulario/   →  GET  VITE_GAS_URL?action=listas    (carga selects al montar)
-              →  POST VITE_GAS_URL                   (envío del formulario)
+src/App.jsx   →  BrowserRouter(basename="/seguimiento-egresados/")
+              →  Route "/"         → Formulario
+              →  Route "/admin/*"  → AdminWrapper (carga todos los registros)
+              →  ?token=xxx        → VistaInstitucion (sin Router Routes)
 
-admin/        →  GET  VITE_GAS_URL?action=registros          (todos los registros)
-              →  GET  VITE_GAS_URL?action=registros&token=xxx (filtrado por institución)
+src/formulario/  →  GET  VITE_GAS_URL?action=listas    (carga selects al montar)
+                 →  POST VITE_GAS_URL                   (envío del formulario)
 
-gas/Code.gs   →  Google Sheets (4 pestañas: respuestas, instituciones, universidades, config)
+src/admin/       →  GET  VITE_GAS_URL?action=registros          (todos los registros)
+                 →  GET  VITE_GAS_URL?action=registros&token=xxx (filtrado por institución)
+
+gas/Code.gs      →  Google Sheets (4 pestañas: respuestas, instituciones, universidades, config)
 ```
 
-**Variable de entorno requerida en ambas apps** (ya configurada en `.env` de cada una):
+**Variable de entorno** (configurada en `.env` local; usar secret `VITE_GAS_URL` en GitHub para producción):
 ```env
 VITE_GAS_URL=https://script.google.com/macros/s/AKfycbw2EVV2WxhZ8bI4RxJSqLCLJyfzuaE_FIugP16Pbe4ewAQm6qHRh7M0Wd1VRWuBgCZGMA/exec
 ```
 
-En GitHub, agregar esta URL como secret `VITE_GAS_URL` para que el workflow la use en el build de producción.
-
 ---
 
-## Estructura `formulario/src/`
+## Estructura `src/`
 
-- `sections/Section1.jsx` … `Section8.jsx` — Un componente por sección; todos comparten `Section.module.css`.
-- `hooks/useFormulario.js` — Estado global, validación por sección y envío.
-- `utils/municipios.js` — Lista hardcodeada de 27 municipios de Caldas.
-- `utils/api.js` — `cargarListas()` y `enviarFormulario()`.
-- `utils/validar.js` — `validarSeccion(n, datos)` → objeto de errores.
-- `components/ProgressBar.jsx` — Barra de progreso de sección.
-- `components/ConsentModal.jsx` — Modal con el texto completo de autorización (Sección 8).
+```
+src/
+  App.jsx                    — Router raíz, detección de token, AdminWrapper
+  App.module.css             — Estilos de estados de carga y VistaInstitucion
+  formulario/
+    Formulario.jsx           — Navegación entre secciones, submit
+    Formulario.module.css
+    sections/Section1…8.jsx  — Un componente por sección; comparten Section.module.css
+    hooks/useFormulario.js   — Estado global, validación por sección y envío
+    utils/municipios.js      — 27 municipios de Caldas (hardcodeado)
+    utils/api.js             — cargarListas(), enviarFormulario()
+    utils/validar.js         — validarSeccion(n, datos) → objeto de errores
+    components/ProgressBar   — Barra de progreso de sección
+    components/ConsentModal  — Modal autorización Ley 1581 (Sección 8)
+  admin/
+    views/Dashboard.jsx      — Métricas clave y gráficas Recharts
+    views/TablaEgresados.jsx — Tabla con búsqueda y filtro; clic → /admin/egresados/:id
+    views/DetalleEgresado.jsx— Todas las respuestas de un registro
+    views/Instituciones.jsx  — Instituciones derivadas de registros
+    hooks/useEgresados.js    — useEgresados(token) carga desde GAS; null = todos
+    utils/api.js             — cargarRegistros(token)
+    utils/formatear.js       — formatearFecha, formatearBooleano, formatearLabel + mapas
+    components/NavBar.jsx    — Navegación sticky del admin
+```
 
-**Datos hardcodeados en el frontend** (no vienen de GAS):
-- Los 27 municipios de Caldas (`utils/municipios.js`) para residencia (s1) y bachillerato (s2.1).
+**Datos hardcodeados** (no vienen de GAS):
+- 27 municipios de Caldas en `src/formulario/utils/municipios.js`
 
-**Datos que sí vienen de GAS** (`action=listas`):
-- Instituciones educativas por municipio → select de s2.2, dependiente de s2.1.
-- Lista de universidades → select de s2.10.
-
----
-
-## Estructura `admin/src/`
-
-- `views/Dashboard.jsx` — Métricas clave y gráficas con Recharts.
-- `views/TablaEgresados.jsx` — Tabla con búsqueda y filtro por municipio; clic en fila navega a detalle.
-- `views/DetalleEgresado.jsx` — Todas las respuestas de un registro (`/egresados/:id`).
-- `views/Instituciones.jsx` — Lista de instituciones con egresados registrados.
-- `hooks/useEgresados.js` — `useEgresados(token)` carga desde GAS; `token=null` trae todo.
-- `utils/formatear.js` — `formatearFecha`, `formatearBooleano`, `formatearLabel` + mapas de labels.
-- `App.jsx` — Detecta `?token=xxx` en la URL: si existe, monta `VistaInstitucion`; si no, monta el admin completo con React Router.
+**Datos desde GAS** (`action=listas`):
+- Instituciones educativas por municipio → select Section2
+- Lista de universidades → select Section2
 
 ---
 
@@ -94,11 +114,11 @@ En GitHub, agregar esta URL como secret `VITE_GAS_URL` para que el workflow la u
 
 El código completo de `gas/Code.gs` está en [GAS.md](GAS.md). Puntos clave:
 
-- **POST con CORS:** GAS no acepta `Content-Type: application/json` desde orígenes externos. El formulario debe enviar el body como `text/plain`; GAS lo parsea con `JSON.parse(e.postData.contents)`. No cambiar este patrón.
-- **Arrays → Sheets:** Los checkboxes con múltiples valores se aplanan a string separado por comas con la función `aplanar()`. Al leerlos desde el admin hay que hacer `split(', ')`.
-- **Encabezados automáticos:** `guardarRespuesta()` crea los encabezados en la primera fila la primera vez que se envía un formulario (si la pestaña `respuestas` está vacía).
-- **Nueva implementación requerida:** Cada cambio en `Code.gs` requiere crear una nueva implementación en GAS (no editar la existente) para que tome efecto en producción.
-- **`generarTokensFaltantes()`:** Función manual que se ejecuta desde el editor de GAS cuando se agregan instituciones nuevas al Sheets sin `id`/`token`/`url`. Lee `dominio_github_pages` de la pestaña `config` para construir las URLs.
+- **POST con CORS:** GAS no acepta `Content-Type: application/json` desde orígenes externos. El formulario envía body como `text/plain`; GAS parsea con `JSON.parse(e.postData.contents)`. No cambiar este patrón.
+- **Arrays → Sheets:** Checkboxes se aplanan a string separado por comas con `aplanar()`. Al leerlos desde el admin hacer `split(', ')`.
+- **Encabezados automáticos:** `guardarRespuesta()` crea encabezados la primera vez si la pestaña `respuestas` está vacía.
+- **Nueva implementación requerida:** Cada cambio en `Code.gs` requiere nueva implementación en GAS (no editar la existente).
+- **`generarTokensFaltantes()`:** Función manual para crear tokens de instituciones nuevas. Lee `dominio_github_pages` de la pestaña `config`.
 
 ---
 
@@ -106,7 +126,7 @@ El código completo de `gas/Code.gs` está en [GAS.md](GAS.md). Puntos clave:
 
 - Componentes: PascalCase (`Section1.jsx`, `ProgressBar.jsx`)
 - Hooks: prefijo `use` (`useFormulario.js`)
-- Utilidades: camelCase (`formatearFecha.js`)
+- Utilidades: camelCase (`formatear.js`)
 - Estilos: CSS Modules (`.module.css`) por componente, diseño mobile-first
 
 ---
@@ -129,14 +149,11 @@ El código completo de `gas/Code.gs` está en [GAS.md](GAS.md). Puntos clave:
 
 ---
 
-## Vite config — bases para GitHub Pages
+## Vite config
 
 ```js
-// formulario/vite.config.js
-base: '/seguimiento-egresados/formulario/'
-
-// admin/vite.config.js
-base: '/seguimiento-egresados/admin/'
+// vite.config.js (raíz)
+base: '/seguimiento-egresados/'
 ```
 
 Después del primer despliegue, actualizar `dominio_github_pages` en la pestaña `config` del Sheets para que `generarTokensFaltantes()` construya las URLs correctas.

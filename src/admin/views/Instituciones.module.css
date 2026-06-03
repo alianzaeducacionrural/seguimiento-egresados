@@ -1,0 +1,91 @@
+.contenedor {
+  padding: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.titulo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1b4332;
+  margin-bottom: 0.5rem;
+}
+
+.nota {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+.nota code {
+  background: #f1f5f9;
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.tablaWrapper {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  overflow: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.tabla thead th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tabla tbody tr {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.tabla tbody td {
+  padding: 0.7rem 1rem;
+  color: #374151;
+}
+
+.vacio {
+  padding: 2rem;
+  text-align: center;
+  color: #94a3b8;
+}
+
+.btnCopiar {
+  padding: 0.3rem 0.75rem;
+  background: #f0fdf4;
+  color: #2d6a4f;
+  border: 1px solid #86efac;
+  border-radius: 5px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btnCopiar:hover {
+  background: #dcfce7;
+}
+
+.estado {
+  padding: 2rem 1.5rem;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.error {
+  padding: 2rem 1.5rem;
+  color: #dc2626;
+  font-size: 0.9rem;
+}

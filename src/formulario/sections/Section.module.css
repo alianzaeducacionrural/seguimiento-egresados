@@ -1,0 +1,157 @@
+.seccion {
+  padding-bottom: 1rem;
+}
+
+.titulo {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1b4332;
+  margin: 0 0 1.25rem;
+}
+
+.subtitulo {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 1.5rem 0 0.75rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.1rem;
+}
+
+.campo > label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.campo input[type="text"],
+.campo input[type="email"],
+.campo input[type="tel"],
+.campo input[type="date"],
+.campo select,
+.campo textarea {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  border-color: #2d6a4f;
+  box-shadow: 0 0 0 2px rgba(45, 106, 79, 0.15);
+}
+
+.campo textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #374151;
+  cursor: pointer;
+}
+
+.radio input[type="radio"] {
+  accent-color: #2d6a4f;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.checkGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #374151;
+  cursor: pointer;
+}
+
+.check input[type="checkbox"] {
+  accent-color: #2d6a4f;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.otroInput {
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.otroInput:focus {
+  border-color: #2d6a4f;
+}
+
+.error {
+  font-size: 0.78rem;
+  color: #dc2626;
+  margin-top: 0.1rem;
+}
+
+.checkConsentimiento {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.88rem;
+  color: #374151;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.checkConsentimiento input[type="checkbox"] {
+  accent-color: #2d6a4f;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.enlaceModal {
+  background: none;
+  border: none;
+  color: #2d6a4f;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+  font-family: inherit;
+}
