@@ -50,34 +50,43 @@ admin/        →  GET  VITE_GAS_URL?action=registros          (todos los regist
 gas/Code.gs   →  Google Sheets (4 pestañas: respuestas, instituciones, universidades, config)
 ```
 
-**Variable de entorno requerida en ambas apps:**
+**Variable de entorno requerida en ambas apps** (ya configurada en `.env` de cada una):
 ```env
-# formulario/.env  y  admin/.env
-VITE_GAS_URL=https://script.google.com/macros/s/XXXXXXXXX/exec
+VITE_GAS_URL=https://script.google.com/macros/s/AKfycbw2EVV2WxhZ8bI4RxJSqLCLJyfzuaE_FIugP16Pbe4ewAQm6qHRh7M0Wd1VRWuBgCZGMA/exec
 ```
+
+En GitHub, agregar esta URL como secret `VITE_GAS_URL` para que el workflow la use en el build de producción.
 
 ---
 
 ## Estructura `formulario/src/`
 
-- `sections/` — Un componente por sección (`Section1.jsx` … `Section8.jsx`). Navegación lineal con barra de progreso.
-- `hooks/useFormulario.js` — Estado global del formulario y lógica de envío.
-- `utils/` — `validarCampos.js`, `formatearFecha.js`, etc.
+- `sections/Section1.jsx` … `Section8.jsx` — Un componente por sección; todos comparten `Section.module.css`.
+- `hooks/useFormulario.js` — Estado global, validación por sección y envío.
+- `utils/municipios.js` — Lista hardcodeada de 27 municipios de Caldas.
+- `utils/api.js` — `cargarListas()` y `enviarFormulario()`.
+- `utils/validar.js` — `validarSeccion(n, datos)` → objeto de errores.
+- `components/ProgressBar.jsx` — Barra de progreso de sección.
+- `components/ConsentModal.jsx` — Modal con el texto completo de autorización (Sección 8).
 
 **Datos hardcodeados en el frontend** (no vienen de GAS):
-- Los 27 municipios de Caldas para los selects de residencia (s1) y bachillerato (s2.1).
+- Los 27 municipios de Caldas (`utils/municipios.js`) para residencia (s1) y bachillerato (s2.1).
 
 **Datos que sí vienen de GAS** (`action=listas`):
-- Instituciones educativas por municipio (para el select s2.2, dependiente del municipio elegido en s2.1).
-- Lista de universidades (s2.10).
+- Instituciones educativas por municipio → select de s2.2, dependiente de s2.1.
+- Lista de universidades → select de s2.10.
 
 ---
 
 ## Estructura `admin/src/`
 
-- `views/` — `Dashboard.jsx`, `TablaEgresados.jsx`, `DetalleEgresado.jsx`, `Instituciones.jsx`.
-- `hooks/useEgresados.js` — Carga y filtrado de registros.
-- Ruta `/?token=xxx` muestra una vista reducida solo con datos de la institución del token.
+- `views/Dashboard.jsx` — Métricas clave y gráficas con Recharts.
+- `views/TablaEgresados.jsx` — Tabla con búsqueda y filtro por municipio; clic en fila navega a detalle.
+- `views/DetalleEgresado.jsx` — Todas las respuestas de un registro (`/egresados/:id`).
+- `views/Instituciones.jsx` — Lista de instituciones con egresados registrados.
+- `hooks/useEgresados.js` — `useEgresados(token)` carga desde GAS; `token=null` trae todo.
+- `utils/formatear.js` — `formatearFecha`, `formatearBooleano`, `formatearLabel` + mapas de labels.
+- `App.jsx` — Detecta `?token=xxx` en la URL: si existe, monta `VistaInstitucion`; si no, monta el admin completo con React Router.
 
 ---
 
@@ -95,7 +104,7 @@ El código completo de `gas/Code.gs` está en [GAS.md](GAS.md). Puntos clave:
 
 ## Convenciones de código
 
-- Componentes: PascalCase (`FormularioSection1.jsx`)
+- Componentes: PascalCase (`Section1.jsx`, `ProgressBar.jsx`)
 - Hooks: prefijo `use` (`useFormulario.js`)
 - Utilidades: camelCase (`formatearFecha.js`)
 - Estilos: CSS Modules (`.module.css`) por componente, diseño mobile-first
