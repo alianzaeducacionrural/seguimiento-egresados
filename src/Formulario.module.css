@@ -233,6 +233,94 @@
   cursor: not-allowed;
 }
 
+/* ── Pantalla de introducción ── */
+
+.introWrap {
+  min-height: 100vh;
+  background: var(--fondo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+}
+
+.introCard {
+  background: var(--superficie);
+  border-radius: 20px;
+  box-shadow: var(--sombra-md);
+  max-width: 540px;
+  width: 100%;
+  padding: 2.75rem 2.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+}
+
+.introLogoBox {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #16A34A, #15803D);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+}
+
+.introLogoLetra {
+  font-size: 1rem;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 0.05em;
+}
+
+.introTitulo {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--texto);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.introSubtitulo {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--verde-dark);
+}
+
+.introTexto {
+  font-size: 0.95rem;
+  color: var(--texto-suave);
+  line-height: 1.7;
+  max-width: 400px;
+  margin: 0;
+}
+
+.btnComenzar {
+  margin-top: 0.5rem;
+  padding: 0.9rem 2.5rem;
+  background: linear-gradient(135deg, #16A34A, #15803D);
+  color: white;
+  border: none;
+  border-radius: var(--radio-pill);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(22, 163, 74, 0.35);
+  transition: transform var(--transicion), box-shadow var(--transicion), opacity var(--transicion);
+}
+
+.btnComenzar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(22, 163, 74, 0.4);
+}
+
+.btnComenzar:active {
+  transform: translateY(0);
+}
+
 /* ── Responsive ── */
 @media (max-width: 480px) {
   .cardHead {

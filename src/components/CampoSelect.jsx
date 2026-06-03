@@ -10,7 +10,7 @@ export function CampoSelect({ label, nombre, valor, onChange, opciones = [], req
         onChange={e => onChange(nombre, e.target.value)}
         disabled={disabled}
       >
-        <option value="">— Seleccionar —</option>
+        <option value="" disabled hidden>— Seleccionar —</option>
         {opciones.map(op => (
           <option key={op} value={op}>{op}</option>
         ))}

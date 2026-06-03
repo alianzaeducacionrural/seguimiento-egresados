@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useFormulario } from './hooks/useFormulario'
 import { useListas } from './hooks/useListas'
 import BarraProgreso from './components/BarraProgreso'
@@ -66,13 +67,39 @@ function SeccionProximamente({ numero }) {
   )
 }
 
+function PantallaIntro({ onComenzar }) {
+  return (
+    <div className={styles.introWrap}>
+      <div className={styles.introCard}>
+        <div className={styles.introLogoBox}>
+          <span className={styles.introLogoLetra}>UEC</span>
+        </div>
+        <h1 className={styles.introTitulo}>
+          Seguimiento de Egresados<br />
+          <span className={styles.introSubtitulo}>Iniciativa La Universidad en el Campo</span>
+        </h1>
+        <p className={styles.introTexto}>
+          Por favor, responde las siguientes preguntas de manera clara y sincera.
+          La información que proporciones será utilizada exclusivamente para mejorar
+          el modelo de Educación Rural con Escuela Nueva.
+        </p>
+        <button className={styles.btnComenzar} onClick={onComenzar}>
+          Comenzar →
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export default function Formulario() {
+  const [intro, setIntro] = useState(true)
   const form = useFormulario()
   const { listas, cargando, error: errorListas } = useListas()
 
   if (cargando) return <PantallaCargando />
   if (errorListas) return <PantallaError mensaje={errorListas} />
   if (form.enviado) return <Confirmacion />
+  if (intro) return <PantallaIntro onComenzar={() => setIntro(false)} />
 
   const n = form.seccionActual
   const as = (seccion) => (campo, valor) => form.actualizarSeccion(seccion, campo, valor)
