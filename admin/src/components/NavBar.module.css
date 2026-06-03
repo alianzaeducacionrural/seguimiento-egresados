@@ -1,0 +1,42 @@
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  height: 52px;
+  background: #1b4332;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.marca {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.enlaces {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.enlace,
+.activo {
+  padding: 0.35rem 0.75rem;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: #d1fae5;
+  transition: background 0.15s;
+}
+
+.activo {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-weight: 600;
+}
+
+.enlace:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
