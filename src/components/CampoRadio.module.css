@@ -1,0 +1,51 @@
+.opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.1rem;
+}
+
+.opcion {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  border: 2px solid var(--borde);
+  border-radius: var(--radio-pill);
+  background: var(--superficie);
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transicion);
+  user-select: none;
+}
+
+.opcion:hover {
+  border-color: var(--verde);
+  color: var(--verde-dark);
+  background: var(--verde-light);
+}
+
+.opcion.activa {
+  border-color: var(--verde);
+  background: var(--verde-light);
+  color: var(--verde-dark);
+  font-weight: 600;
+}
+
+.indicador {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  flex-shrink: 0;
+  position: relative;
+  transition: background var(--transicion);
+}
+
+.opcion.activa .indicador {
+  background: var(--verde);
+  border-color: var(--verde);
+  box-shadow: inset 0 0 0 2.5px var(--verde-light);
+}

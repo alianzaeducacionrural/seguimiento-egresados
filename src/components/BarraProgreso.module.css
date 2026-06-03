@@ -1,0 +1,89 @@
+.header {
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borde);
+  padding: 0.9rem 1.25rem 0.8rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: var(--sombra);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.logoBox {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #16A34A, #15803D);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.marcaTexto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.marcaNombre {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--texto);
+  line-height: 1.2;
+}
+
+.marcaSub {
+  font-size: 0.68rem;
+  color: var(--texto-suave);
+  line-height: 1.2;
+}
+
+.contador {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--verde-dark);
+  background: var(--verde-light);
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radio-pill);
+  white-space: nowrap;
+}
+
+.barraFondo {
+  height: 6px;
+  background: #E2E8F0;
+  border-radius: var(--radio-pill);
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.barraRelleno {
+  height: 100%;
+  background: linear-gradient(90deg, #16A34A 0%, #22C55E 100%);
+  border-radius: var(--radio-pill);
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tituloSeccion {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--verde-dark);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}

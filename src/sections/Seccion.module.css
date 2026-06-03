@@ -1,0 +1,20 @@
+.grupo {
+  margin-bottom: 0.5rem;
+}
+
+.grupoTitulo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--verde-dark);
+  padding: 0.5rem 0;
+  border-bottom: 2px solid var(--verde-light);
+  margin-bottom: 1.25rem;
+}
+
+.separador {
+  border: none;
+  border-top: 1px solid var(--borde);
+  margin: 1.75rem 0;
+}
