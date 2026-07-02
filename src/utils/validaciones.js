@@ -6,7 +6,10 @@ export function validarSeccion(numero, datos) {
     case 2: return validarSeccion2(datos.s2 ?? {})
     case 3: return validarSeccion3(datos.s3 ?? {})
     case 4: return validarSeccion4(datos.s4 ?? {})
-    // Secciones 5–8 se implementan en Mes 5; pasan automáticamente por ahora
+    case 5: return validarSeccion5(datos.s5 ?? {})
+    case 6: return validarSeccion6(datos.s6 ?? {})
+    case 7: return validarSeccion7(datos.s7 ?? {})
+    case 8: return validarSeccion8(datos.s8 ?? {})
     default: return null
   }
 }
@@ -56,4 +59,27 @@ function validarSeccion4(s) {
     requerido(s.linea_empresarismo, 'Indica si fuiste beneficiario de la Línea de Empresarismo') ||
     requerido(s.habilidades_emprender, 'Indica si Escuela Nueva te ayudó a desarrollar habilidades para emprender')
   )
+}
+
+function validarSeccion5(s) {
+  return (
+    requerido(s.implemento_ppps, 'Indica si implementaste algún Proyecto Pedagógico Productivo Sustentable') ||
+    (s.implemento_ppps === 'si'
+      ? requerido(s.aplica_conocimientos, 'Indica si sigues aplicando esos conocimientos')
+      : null)
+  )
+}
+
+function validarSeccion6(s) {
+  return requerido(s.empalme_generacional, 'Indica si te consideras parte del empalme generacional')
+}
+
+function validarSeccion7(s) {
+  if (!s.aspectos_mejorar || String(s.aspectos_mejorar).trim().length < 10)
+    return 'Describe los aspectos a mejorar (mínimo 10 caracteres)'
+  return requerido(s.recomendaria, '¿Recomendarías el modelo? Selecciona una opción')
+}
+
+function validarSeccion8(s) {
+  return requerido(s.autorizacion, 'Debes autorizar el tratamiento de tus datos personales para enviar el formulario')
 }

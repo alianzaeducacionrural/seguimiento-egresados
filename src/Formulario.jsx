@@ -7,6 +7,10 @@ import Seccion1 from './sections/Seccion1'
 import Seccion2 from './sections/Seccion2'
 import Seccion3 from './sections/Seccion3'
 import Seccion4 from './sections/Seccion4'
+import Seccion5 from './sections/Seccion5'
+import Seccion6 from './sections/Seccion6'
+import Seccion7 from './sections/Seccion7'
+import Seccion8 from './sections/Seccion8'
 import styles from './Formulario.module.css'
 
 const TITULOS = [
@@ -56,17 +60,6 @@ function Confirmacion() {
   )
 }
 
-function SeccionProximamente({ numero }) {
-  return (
-    <div className={styles.proximamente}>
-      <span className={styles.proximamenteIcono}>🔧</span>
-      <p className={styles.proximamenteTitulo}>Sección en preparación</p>
-      <p className={styles.proximamenteTexto}>
-        Esta sección estará disponible próximamente. Continúa hacia adelante.
-      </p>
-    </div>
-  )
-}
 
 function PantallaIntro({ onComenzar }) {
   return (
@@ -108,9 +101,13 @@ export default function Formulario() {
     2: <Seccion2 datos={form.datos.s2} onChange={as(2)} listas={listas} />,
     3: <Seccion3 datos={form.datos.s3} onChange={as(3)} />,
     4: <Seccion4 datos={form.datos.s4} onChange={as(4)} />,
+    5: <Seccion5 datos={form.datos.s5} onChange={as(5)} />,
+    6: <Seccion6 datos={form.datos.s6} onChange={as(6)} />,
+    7: <Seccion7 datos={form.datos.s7} onChange={as(7)} />,
+    8: <Seccion8 datos={form.datos.s8} onChange={as(8)} />,
   }
 
-  const contenido = secciones[n] ?? <SeccionProximamente numero={n} />
+  const contenido = secciones[n]
   const esUltima = n === TOTAL
 
   return (

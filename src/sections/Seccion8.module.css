@@ -1,0 +1,65 @@
+.autorizacionWrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--verde-light);
+  border: 1.5px solid var(--verde);
+  border-radius: var(--radio);
+}
+
+.checkBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 2px solid var(--verde);
+  background: var(--superficie);
+  flex-shrink: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transicion), border-color var(--transicion);
+  margin-top: 0.1rem;
+}
+
+.checkBtn.activo {
+  background: linear-gradient(135deg, #1E7A35, #1A6128);
+  border-color: #1A6128;
+}
+
+.checkMarca {
+  font-size: 0.8rem;
+  color: white;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.autorizacionTexto {
+  font-size: 0.875rem;
+  color: var(--verde-txt);
+  line-height: 1.55;
+}
+
+.linkModal {
+  background: none;
+  border: none;
+  color: var(--verde-dark);
+  font-weight: 700;
+  font-size: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity var(--transicion);
+}
+
+.linkModal:hover {
+  opacity: 0.75;
+}
+
+.requeridoMarca {
+  color: var(--naranja);
+  font-weight: 700;
+}
