@@ -2,3 +2,6 @@ node_modules/
 dist/
 .env
 .DS_Store
+
+# clasp / Google Apps Script — credenciales locales (el scriptId sí se versiona en gas/.clasp.json)
+.clasprc.json

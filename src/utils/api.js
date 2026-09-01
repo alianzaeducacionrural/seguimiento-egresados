@@ -13,6 +13,11 @@ export async function cargarRegistros(token = '') {
   return res.json()
 }
 
+export async function cargarInstituciones() {
+  const res = await fetch(`${GAS_URL}?action=instituciones`)
+  return res.json()
+}
+
 export async function enviarFormulario(datos) {
   const res = await fetch(GAS_URL, {
     method: 'POST',

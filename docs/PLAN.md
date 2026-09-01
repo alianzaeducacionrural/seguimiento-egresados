@@ -16,11 +16,11 @@ El código de Google Apps Script está en `GAS.md`.
 |---|---|---|
 | 1 | Fundamentos | Diseño y arquitectura ✓ |
 | 2 | Fundamentos | Diseño del formulario ✓ |
-| 3 | Desarrollo | Setup del proyecto + GAS ← **empezamos aquí** |
-| 4 | Desarrollo | Formulario — Secciones 1 a 4 |
-| 5 | Desarrollo | Formulario — Secciones 5 a 8 + envío |
-| 6 | Dashboard | Panel admin — estructura y datos |
-| 7 | Dashboard | Panel admin — gráficas e indicadores |
+| 3 | Desarrollo | Setup del proyecto + GAS ✓ |
+| 4 | Desarrollo | Formulario — Secciones 1 a 4 ✓ |
+| 5 | Desarrollo | Formulario — Secciones 5 a 8 + envío ✓ |
+| 6 | Dashboard | Panel admin — estructura y datos ✓ |
+| 7 | Dashboard | Panel admin — gráficas e indicadores ← **siguiente** |
 | 8 | Cierre | Vistas por institución + pulimiento |
 | 9 | Cierre | Pruebas, ajustes y lanzamiento |
 
@@ -299,6 +299,44 @@ los datos al panel admin.
 
 ### Entregable
 Panel admin con tabla, detalle e instituciones con datos reales.
+
+### Estado — completado
+
+- `src/admin/` creado (fuera de la estructura plana del formulario):
+  - `AdminLayout.jsx` + `Admin.module.css` — sidebar + header + `<Outlet>`.
+    El layout carga los registros una sola vez con `useEgresados()` y los
+    comparte a las vistas vía `useOutletContext()`.
+  - `views/Dashboard.jsx` — ruta `/admin`, tarjetas de resumen básicas
+    (total, % continuaron, % UEC, % trabajan, % emprendieron). Las
+    gráficas quedan para el Mes 7.
+  - `views/TablaEgresados.jsx` — filtros (búsqueda por nombre, municipio,
+    institución en cascada, año), paginación de 20, exportación a CSV
+    (`utils/exportarCsv.js`), fila clicable hacia el detalle.
+  - `views/DetalleEgresado.jsx` — `/admin/egresados/:id` (`id` = índice
+    original del registro), todas las respuestas agrupadas por sección
+    según `utils/campos.js`, valores traducidos con `utils/formatear.js`.
+  - `views/Instituciones.jsx` — tabla municipio / institución / token /
+    "Copiar enlace", con búsqueda.
+  - `hooks/useEgresados.js`.
+- `src/utils/api.js` — nueva función `cargarInstituciones()`.
+- **GAS** desplegado con **clasp** (`@google/clasp`). `gas/Code.gs` +
+  `gas/appsscript.json` + `gas/.clasp.json` son la fuente versionada.
+  - Nueva acción `?action=instituciones` → `getInstituciones()` (lista con
+    token y url). **Ya en producción** (despliegue `AKfycbw2…` → versión 4,
+    misma URL de `VITE_GAS_URL`).
+  - `generarTokensFaltantes()` ahora escribe la url como
+    `…/admin/institucion?token=` (helper `urlInstitucion`).
+  - `migrarUrlsInstituciones()` reescribió las 109 filas `url` existentes
+    del formato viejo `/admin/?token=` al nuevo.
+  - Scripts npm: `gas:pull`, `gas:push`, `gas:version`, `gas:redeploy`,
+    `gas:deployments`, `gas:logs`.
+- `.github/workflows/deploy.yml` — copia `dist/index.html` a `dist/404.html`
+  para que las rutas del admin funcionen con recarga directa en GitHub Pages.
+- Rutas del admin cableadas en `src/App.jsx` con rutas anidadas; cualquier
+  ruta desconocida redirige a `/`.
+
+Pendiente real para más adelante: gate de acceso al `/admin` completo
+(hoy es público) y la vista `/admin/institucion?token=xxx` — ambos en Mes 7/8.
 
 ---
 

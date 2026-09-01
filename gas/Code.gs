@@ -2,6 +2,8 @@
 // CONFIGURACIÓN
 // ─────────────────────────────────────────────────────────────
 
+const SHEET_ID = SpreadsheetApp.getActiveSpreadsheet().getId();
+
 const HOJAS = {
   RESPUESTAS:    'respuestas',
   INSTITUCIONES: 'instituciones',
@@ -9,6 +11,7 @@ const HOJAS = {
   CONFIG:        'config',
 };
 
+// Columnas de la pestaña instituciones (1-indexed)
 const COL_IE = {
   ID:         1,
   MUNICIPIO:  2,
@@ -24,9 +27,11 @@ const COL_IE = {
 function doGet(e) {
   const action = e.parameter.action || '';
   const token  = e.parameter.token  || '';
+
   try {
-    if (action === 'listas')    return responder(getListas());
-    if (action === 'registros') return responder(getRegistros(token));
+    if (action === 'listas')        return responder(getListas());
+    if (action === 'registros')     return responder(getRegistros(token));
+    if (action === 'instituciones') return responder(getInstituciones());
     return responder({ ok: false, error: 'Acción no reconocida' });
   } catch (err) {
     return responder({ ok: false, error: err.message });
@@ -42,24 +47,32 @@ function doPost(e) {
   }
 }
 
+// ─────────────────────────────────────────────────────────────
+// CORS — todas las respuestas permiten origen cruzado
+// ─────────────────────────────────────────────────────────────
+
 function responder(datos) {
-  return ContentService
+  const output = ContentService
     .createTextOutput(JSON.stringify(datos))
     .setMimeType(ContentService.MimeType.JSON);
+  return output;
 }
 
 // ─────────────────────────────────────────────────────────────
 // GET listas — municipios, instituciones y universidades
+// para poblar los selects del formulario
 // ─────────────────────────────────────────────────────────────
 
 function getListas() {
-  const ss   = SpreadsheetApp.getActiveSpreadsheet();
-  const hIE  = ss.getSheetByName(HOJAS.INSTITUCIONES);
-  const hUni = ss.getSheetByName(HOJAS.UNIVERSIDADES);
+  const ss      = SpreadsheetApp.getActiveSpreadsheet();
+  const hIE     = ss.getSheetByName(HOJAS.INSTITUCIONES);
+  const hUni    = ss.getSheetByName(HOJAS.UNIVERSIDADES);
 
+  // Leer instituciones (desde fila 2, columnas A-C)
   const filasIE = hIE.getRange(2, 1, Math.max(hIE.getLastRow() - 1, 1), 3).getValues();
-  const municipiosSet = new Set();
-  const instituciones = {};
+
+  const municipiosSet  = new Set();
+  const instituciones  = {};
 
   filasIE.forEach(fila => {
     const municipio = String(fila[1]).trim();
@@ -72,7 +85,8 @@ function getListas() {
 
   const municipios = Array.from(municipiosSet).sort();
 
-  const filasUni = hUni.getRange(2, 1, Math.max(hUni.getLastRow() - 1, 1), 1).getValues();
+  // Leer universidades (desde fila 2, columna A)
+  const filasUni    = hUni.getRange(2, 1, Math.max(hUni.getLastRow() - 1, 1), 1).getValues();
   const universidades = filasUni
     .map(f => String(f[0]).trim())
     .filter(u => u !== '');
@@ -81,7 +95,7 @@ function getListas() {
 }
 
 // ─────────────────────────────────────────────────────────────
-// GET registros — todos o filtrados por token
+// GET registros — todos o filtrados por token de institución
 // ─────────────────────────────────────────────────────────────
 
 function getRegistros(token) {
@@ -92,6 +106,7 @@ function getRegistros(token) {
   let institucion = null;
   let municipio   = null;
 
+  // Si hay token, validarlo contra la pestaña instituciones
   if (token) {
     const filasIE = hIE.getRange(2, 1, Math.max(hIE.getLastRow() - 1, 1), 5).getValues();
     const fila    = filasIE.find(f => String(f[COL_IE.TOKEN - 1]).trim() === token);
@@ -100,8 +115,11 @@ function getRegistros(token) {
     municipio   = String(fila[COL_IE.MUNICIPIO - 1]).trim();
   }
 
+  // Leer encabezados y datos de respuestas
   const lastRow = hRes.getLastRow();
-  if (lastRow < 2) return { ok: true, institucion, municipio, total: 0, registros: [] };
+  if (lastRow < 2) {
+    return { ok: true, institucion, municipio, total: 0, registros: [] };
+  }
 
   const encabezados = hRes.getRange(1, 1, 1, hRes.getLastColumn()).getValues()[0];
   const filas       = hRes.getRange(2, 1, lastRow - 1, hRes.getLastColumn()).getValues();
@@ -112,6 +130,7 @@ function getRegistros(token) {
     return obj;
   });
 
+  // Filtrar por institución si hay token
   if (institucion) {
     registros = registros.filter(r =>
       String(r['s2_ie_bachillerato']).trim() === institucion &&
@@ -123,6 +142,32 @@ function getRegistros(token) {
 }
 
 // ─────────────────────────────────────────────────────────────
+// GET instituciones — lista completa con id, municipio, nombre,
+// token y url. La usa la vista /admin/instituciones del panel.
+// ─────────────────────────────────────────────────────────────
+
+function getInstituciones() {
+  const ss  = SpreadsheetApp.getActiveSpreadsheet();
+  const hIE = ss.getSheetByName(HOJAS.INSTITUCIONES);
+
+  const lastRow = hIE.getLastRow();
+  if (lastRow < 2) return { ok: true, total: 0, instituciones: [] };
+
+  const filas = hIE.getRange(2, 1, lastRow - 1, 5).getValues();
+  const instituciones = filas
+    .filter(f => String(f[COL_IE.NOMBRE - 1]).trim() !== '')
+    .map(f => ({
+      id:        f[COL_IE.ID - 1],
+      municipio: String(f[COL_IE.MUNICIPIO - 1]).trim(),
+      nombre:    String(f[COL_IE.NOMBRE - 1]).trim(),
+      token:     String(f[COL_IE.TOKEN - 1]).trim(),
+      url:       String(f[COL_IE.URL - 1]).trim(),
+    }));
+
+  return { ok: true, total: instituciones.length, instituciones };
+}
+
+// ─────────────────────────────────────────────────────────────
 // POST — guardar respuesta del formulario
 // ─────────────────────────────────────────────────────────────
 
@@ -130,7 +175,10 @@ function guardarRespuesta(datos) {
   const ss   = SpreadsheetApp.getActiveSpreadsheet();
   const hRes = ss.getSheetByName(HOJAS.RESPUESTAS);
 
-  if (hRes.getLastRow() === 0) hRes.appendRow(getEncabezados());
+  // Si no hay encabezados, crearlos
+  if (hRes.getLastRow() === 0) {
+    hRes.appendRow(getEncabezados());
+  }
 
   const s1 = datos.s1 || {};
   const s2 = datos.s2 || {};
@@ -141,84 +189,122 @@ function guardarRespuesta(datos) {
   const s7 = datos.s7 || {};
   const s8 = datos.s8 || {};
 
-  hRes.appendRow([
+  const fila = [
     datos.timestamp || new Date().toISOString(),
     datos.version   || '1.0',
-    s1.tipo_documento       || '', s1.numero_documento    || '',
-    s1.nombre               || '', s1.fecha_nacimiento    || '',
-    s1.municipio_residencia || '', s1.municipio_otro      || '',
-    s1.correo               || '', s1.telefono            || '', s1.zona || '',
-    s2.municipio_bachillerato  || '', s2.ie_bachillerato       || '',
-    s2.anio_graduacion_media   || '', s2.continuo_superior     || '',
+    // Sección 1
+    s1.tipo_documento        || '',
+    s1.numero_documento      || '',
+    s1.nombre                || '',
+    s1.fecha_nacimiento      || '',
+    s1.municipio_residencia  || '',
+    s1.municipio_otro        || '',
+    s1.correo                || '',
+    s1.telefono              || '',
+    s1.zona                  || '',
+    // Sección 2
+    s2.municipio_bachillerato  || '',
+    s2.ie_bachillerato         || '',
+    s2.anio_graduacion_media   || '',
+    s2.continuo_superior       || '',
     aplanar(s2.razon_no_continuo),
-    s2.estudio_uec             || '', aplanar(s2.nivel_uec),
-    s2.ie_programa_uec         || '', s2.nombre_programa_uec   || '',
-    s2.universidad_uec         || '', s2.anio_grad_uec          || '',
-    s2.continuo_postgrado      || '', s2.nivel_postgrado        || '',
-    s2.institucion_postgrado   || '', s2.programa_postgrado     || '',
+    s2.estudio_uec             || '',
+    aplanar(s2.nivel_uec),
+    s2.ie_programa_uec         || '',
+    s2.nombre_programa_uec     || '',
+    s2.universidad_uec         || '',
+    s2.anio_grad_uec           || '',
+    s2.continuo_postgrado      || '',
+    s2.nivel_postgrado         || '',
+    s2.institucion_postgrado   || '',
+    s2.programa_postgrado      || '',
     aplanar(s2.razon_no_postgrado),
-    s3.trabaja              || '', s3.ha_trabajado         || '',
-    s3.linea_insercion      || '', s3.empleo_relacionado   || '',
-    aplanar(s3.sector),    s3.tipo_contrato        || '',
-    s3.formacion_contribuyo || '',
-    s4.ha_emprendido         || '', aplanar(s4.tipo_emprendimiento),
-    s4.fondo_rotatorio       || '', s4.linea_empresarismo   || '',
+    // Sección 3
+    s3.trabaja               || '',
+    s3.ha_trabajado          || '',
+    s3.linea_insercion       || '',
+    s3.empleo_relacionado    || '',
+    aplanar(s3.sector),
+    s3.tipo_contrato         || '',
+    s3.formacion_contribuyo  || '',
+    // Sección 4
+    s4.ha_emprendido         || '',
+    aplanar(s4.tipo_emprendimiento),
+    s4.fondo_rotatorio       || '',
+    s4.linea_empresarismo    || '',
     s4.habilidades_emprender || '',
-    s5.implemento_ppps       || '', aplanar(s5.area_ppps),
+    // Sección 5
+    s5.implemento_ppps       || '',
+    aplanar(s5.area_ppps),
     s5.aplica_conocimientos  || '',
-    s6.empalme_generacional  || '', aplanar(s6.razon_empalme),
+    // Sección 6
+    s6.empalme_generacional  || '',
+    aplanar(s6.razon_empalme),
+    // Sección 7
     aplanar(s7.estrategias_escuela_nueva),
-    s7.aspectos_mejorar      || '', s7.recomendaria          || '',
+    s7.aspectos_mejorar      || '',
+    s7.recomendaria          || '',
     s7.comentarios_adicionales || '',
-    s8.contacto_telefono     || '', s8.contacto_correo       || '',
+    // Sección 8
+    s8.contacto_telefono     || '',
+    s8.contacto_correo       || '',
     s8.autorizacion          || '',
-  ]);
+  ];
 
+  hRes.appendRow(fila);
   return { ok: true, mensaje: 'Respuesta registrada correctamente' };
 }
 
+// ─────────────────────────────────────────────────────────────
+// Encabezados de la pestaña respuestas
+// Deben coincidir exactamente con el orden de la fila en guardarRespuesta()
+// ─────────────────────────────────────────────────────────────
+
 function getEncabezados() {
   return [
-    'timestamp','version',
-    's1_tipo_documento','s1_numero_documento','s1_nombre','s1_fecha_nacimiento',
-    's1_municipio_residencia','s1_municipio_otro','s1_correo','s1_telefono','s1_zona',
-    's2_municipio_bachillerato','s2_ie_bachillerato','s2_anio_graduacion_media',
-    's2_continuo_superior','s2_razon_no_continuo',
-    's2_estudio_uec','s2_nivel_uec','s2_ie_programa_uec','s2_nombre_programa_uec',
-    's2_universidad_uec','s2_anio_grad_uec',
-    's2_continuo_postgrado','s2_nivel_postgrado','s2_institucion_postgrado',
-    's2_programa_postgrado','s2_razon_no_postgrado',
-    's3_trabaja','s3_ha_trabajado','s3_linea_insercion','s3_empleo_relacionado',
-    's3_sector','s3_tipo_contrato','s3_formacion_contribuyo',
-    's4_ha_emprendido','s4_tipo_emprendimiento','s4_fondo_rotatorio',
-    's4_linea_empresarismo','s4_habilidades_emprender',
-    's5_implemento_ppps','s5_area_ppps','s5_aplica_conocimientos',
-    's6_empalme_generacional','s6_razon_empalme',
-    's7_estrategias_escuela_nueva','s7_aspectos_mejorar','s7_recomendaria',
+    'timestamp', 'version',
+    's1_tipo_documento', 's1_numero_documento', 's1_nombre', 's1_fecha_nacimiento',
+    's1_municipio_residencia', 's1_municipio_otro', 's1_correo', 's1_telefono', 's1_zona',
+    's2_municipio_bachillerato', 's2_ie_bachillerato', 's2_anio_graduacion_media',
+    's2_continuo_superior', 's2_razon_no_continuo',
+    's2_estudio_uec', 's2_nivel_uec', 's2_ie_programa_uec', 's2_nombre_programa_uec',
+    's2_universidad_uec', 's2_anio_grad_uec',
+    's2_continuo_postgrado', 's2_nivel_postgrado', 's2_institucion_postgrado',
+    's2_programa_postgrado', 's2_razon_no_postgrado',
+    's3_trabaja', 's3_ha_trabajado', 's3_linea_insercion', 's3_empleo_relacionado',
+    's3_sector', 's3_tipo_contrato', 's3_formacion_contribuyo',
+    's4_ha_emprendido', 's4_tipo_emprendimiento', 's4_fondo_rotatorio',
+    's4_linea_empresarismo', 's4_habilidades_emprender',
+    's5_implemento_ppps', 's5_area_ppps', 's5_aplica_conocimientos',
+    's6_empalme_generacional', 's6_razon_empalme',
+    's7_estrategias_escuela_nueva', 's7_aspectos_mejorar', 's7_recomendaria',
     's7_comentarios_adicionales',
-    's8_contacto_telefono','s8_contacto_correo','s8_autorizacion',
+    's8_contacto_telefono', 's8_contacto_correo', 's8_autorizacion',
   ];
 }
 
 // ─────────────────────────────────────────────────────────────
 // FUNCIÓN MANUAL — generarTokensFaltantes()
 // Ejecutar desde el editor de GAS cuando se agreguen
-// instituciones nuevas sin id, token y url.
+// instituciones nuevas sin id, token y url en el Sheets.
 // ─────────────────────────────────────────────────────────────
 
 function generarTokensFaltantes() {
-  const ss   = SpreadsheetApp.getActiveSpreadsheet();
-  const hIE  = ss.getSheetByName(HOJAS.INSTITUCIONES);
+  const ss  = SpreadsheetApp.getActiveSpreadsheet();
+  const hIE = ss.getSheetByName(HOJAS.INSTITUCIONES);
   const hCfg = ss.getSheetByName(HOJAS.CONFIG);
 
+  // Leer dominio desde config
   const filasCfg = hCfg.getDataRange().getValues();
   let dominio = '';
   filasCfg.forEach(f => {
-    if (String(f[0]).trim() === 'dominio_github_pages') dominio = String(f[1]).trim();
+    if (String(f[0]).trim() === 'dominio_github_pages') {
+      dominio = String(f[1]).trim();
+    }
   });
 
   if (!dominio) {
-    SpreadsheetApp.getUi().alert('Falta dominio_github_pages en la pestaña config.');
+    SpreadsheetApp.getUi().alert('Falta el valor dominio_github_pages en la pestaña config.');
     return;
   }
 
@@ -229,10 +315,13 @@ function generarTokensFaltantes() {
   }
 
   const filas = hIE.getRange(2, 1, lastRow - 1, 5).getValues();
+
+  // Recopilar tokens existentes para garantizar unicidad
   const tokensExistentes = new Set(
     filas.map(f => String(f[COL_IE.TOKEN - 1]).trim()).filter(t => t !== '')
   );
 
+  // Calcular el último id usado
   let ultimoId = 0;
   filas.forEach(f => {
     const id = parseInt(f[COL_IE.ID - 1]);
@@ -240,22 +329,25 @@ function generarTokensFaltantes() {
   });
 
   let procesadas = 0;
+
   filas.forEach((fila, i) => {
     const municipio = String(fila[COL_IE.MUNICIPIO - 1]).trim();
     const nombre    = String(fila[COL_IE.NOMBRE - 1]).trim();
     const idActual  = String(fila[COL_IE.ID - 1]).trim();
+
+    // Solo procesar filas con municipio y nombre pero sin id
     if (!municipio || !nombre || idActual !== '') return;
 
     ultimoId++;
     const nuevoToken = generarToken(tokensExistentes);
     tokensExistentes.add(nuevoToken);
-    const filaSheet = i + 2;
+    const nuevaUrl = urlInstitucion(dominio, nuevoToken);
+    const filaSheet = i + 2; // +2 por encabezado y base 1
 
     hIE.getRange(filaSheet, COL_IE.ID).setValue(ultimoId);
     hIE.getRange(filaSheet, COL_IE.TOKEN).setValue(nuevoToken);
-    hIE.getRange(filaSheet, COL_IE.URL).setValue(
-      `${dominio}/admin/institucion?token=${nuevoToken}`
-    );
+    hIE.getRange(filaSheet, COL_IE.URL).setValue(nuevaUrl);
+
     procesadas++;
   });
 
@@ -267,9 +359,51 @@ function generarTokensFaltantes() {
 }
 
 // ─────────────────────────────────────────────────────────────
+// FUNCIÓN MANUAL — migrarUrlsInstituciones()
+// Reescribe la columna `url` de todas las instituciones con token
+// al formato actual (ver urlInstitucion). Ejecutar desde el editor
+// si alguna vez cambia el formato de la ruta del panel por institución.
+// ─────────────────────────────────────────────────────────────
+
+function migrarUrlsInstituciones() {
+  const ss  = SpreadsheetApp.getActiveSpreadsheet();
+  const hIE = ss.getSheetByName(HOJAS.INSTITUCIONES);
+  const hCfg = ss.getSheetByName(HOJAS.CONFIG);
+
+  let dominio = '';
+  hCfg.getDataRange().getValues().forEach(f => {
+    if (String(f[0]).trim() === 'dominio_github_pages') dominio = String(f[1]).trim();
+  });
+  if (!dominio) throw new Error('Falta dominio_github_pages en la pestaña config.');
+
+  const lastRow = hIE.getLastRow();
+  if (lastRow < 2) return { ok: true, actualizadas: 0 };
+
+  const filas = hIE.getRange(2, 1, lastRow - 1, 5).getValues();
+  let actualizadas = 0;
+
+  filas.forEach((fila, i) => {
+    const token = String(fila[COL_IE.TOKEN - 1]).trim();
+    if (!token) return;
+    const urlNueva = urlInstitucion(dominio, token);
+    if (String(fila[COL_IE.URL - 1]).trim() === urlNueva) return;
+    hIE.getRange(i + 2, COL_IE.URL).setValue(urlNueva);
+    actualizadas++;
+  });
+
+  return { ok: true, actualizadas };
+}
+
+// ─────────────────────────────────────────────────────────────
 // UTILIDADES
 // ─────────────────────────────────────────────────────────────
 
+// Enlace del panel reducido por institución para un token dado.
+function urlInstitucion(dominio, token) {
+  return `${dominio}/admin/institucion?token=${token}`;
+}
+
+// Genera un token alfanumérico de 6 caracteres único
 function generarToken(existentes) {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
   let token;
@@ -281,6 +415,7 @@ function generarToken(existentes) {
   return token;
 }
 
+// Convierte arrays a string separado por comas para guardar en Sheets
 function aplanar(valor) {
   if (Array.isArray(valor)) return valor.join(', ');
   if (valor === null || valor === undefined) return '';

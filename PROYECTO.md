@@ -51,25 +51,25 @@ seguimiento-egresados/          # raíz = app React única
 │   │   ├── Seccion6.jsx
 │   │   ├── Seccion7.jsx
 │   │   └── Seccion8.jsx
-│   ├── admin/                  # vistas del panel de administración
-│   │   ├── components/
-│   │   │   ├── Sidebar.jsx
-│   │   │   ├── Header.jsx
-│   │   │   ├── TablaEgresados.jsx
-│   │   │   ├── FiltrosBusqueda.jsx
-│   │   │   └── BotonExportar.jsx
+│   ├── admin/                  # panel de administración (Mes 6+)
+│   │   ├── AdminLayout.jsx     # sidebar + header + <Outlet>, carga y comparte registros
+│   │   ├── Admin.module.css
+│   │   ├── hooks/
+│   │   │   └── useEgresados.js # GET ?action=registros
+│   │   ├── utils/
+│   │   │   ├── formatear.js    # traducción de valores codificados + fechas
+│   │   │   ├── campos.js       # estructura de respuestas por sección (detalle + CSV)
+│   │   │   └── exportarCsv.js
 │   │   └── views/
-│   │       ├── Dashboard.jsx
-│   │       ├── Egresados.jsx
-│   │       ├── DetalleEgresado.jsx
-│   │       ├── Instituciones.jsx
-│   │       └── VistaInstitucion.jsx
+│   │       ├── Dashboard.jsx        # /admin  — tarjetas de resumen
+│   │       ├── TablaEgresados.jsx   # /admin/egresados — filtros, paginación, CSV
+│   │       ├── DetalleEgresado.jsx  # /admin/egresados/:id
+│   │       └── Instituciones.jsx    # /admin/instituciones — tokens y enlaces
 │   ├── hooks/
 │   │   ├── useFormulario.js    # estado global del formulario
-│   │   ├── useListas.js        # carga municipios, instituciones y universidades
-│   │   └── useEgresados.js     # carga registros desde GAS para el admin
+│   │   └── useListas.js        # carga municipios, instituciones y universidades
 │   ├── utils/
-│   │   ├── api.js              # funciones fetch hacia GAS
+│   │   ├── api.js              # cargarListas, cargarRegistros, cargarInstituciones, enviarFormulario
 │   │   ├── validaciones.js
 │   │   └── municipios.js       # lista hardcodeada de 27 municipios de Caldas
 │   ├── App.jsx                 # router principal
@@ -214,6 +214,22 @@ Se ejecuta al montar la app.
     "Anserma": ["Alto Nubia", "..."]
   },
   "universidades": ["Universidad de Caldas", "..."]
+}
+```
+
+### GET /?action=instituciones
+Lista completa de instituciones con `id`, `municipio`, `nombre`, `token` y `url`.
+La usa la vista `/admin/instituciones` para mostrar y copiar los enlaces.
+
+**Response:**
+```json
+{
+  "ok": true,
+  "total": 120,
+  "instituciones": [
+    { "id": 1, "municipio": "Riosucio", "nombre": "Florencia",
+      "token": "a1b2c3", "url": "https://…/admin/institucion?token=a1b2c3" }
+  ]
 }
 ```
 
@@ -392,5 +408,15 @@ GitHub Actions construye desde la raíz y publica en la rama `gh-pages`.
 
 ## Estado actual del proyecto
 
-Mes 2 de 9 completado — diseño del formulario cerrado.
-Mes 3: setup del proyecto en VS Code con Claude Code.
+Meses 1–6 de 9 completados y desplegados en GitHub Pages:
+
+- Formulario público completo (secciones 1–8) con envío real a Google Sheets.
+- Panel admin (`/admin`) con layout, resumen, tabla de egresados con filtros y
+  exportación a CSV, detalle individual y listado de instituciones con tokens.
+
+Siguiente: Mes 7 — gráficas e indicadores (Recharts), filtros cruzados y la
+vista reducida por institución (`/admin/institucion?token=xxx`).
+
+> Nota: la estructura real de `src/` es plana para el formulario
+> (`src/components`, `src/sections`, `src/hooks`, `src/utils`) y todo lo del
+> admin vive bajo `src/admin/`. No existe la carpeta `src/formulario/`.

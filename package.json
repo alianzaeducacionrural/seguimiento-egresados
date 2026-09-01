@@ -7,7 +7,13 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "gas:pull": "cd gas && clasp pull",
+    "gas:push": "cd gas && clasp push -f",
+    "gas:version": "cd gas && clasp create-version",
+    "gas:redeploy": "cd gas && clasp redeploy AKfycbw2EVV2WxhZ8bI4RxJSqLCLJyfzuaE_FIugP16Pbe4ewAQm6qHRh7M0Wd1VRWuBgCZGMA",
+    "gas:deployments": "cd gas && clasp list-deployments",
+    "gas:logs": "cd gas && clasp tail-logs"
   },
   "dependencies": {
     "react": "^19.2.6",
