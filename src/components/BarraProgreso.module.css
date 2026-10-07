@@ -1,29 +1,36 @@
 .header {
-  background: var(--superficie);
-  border-bottom: 1px solid var(--borde);
-  padding: 0.9rem 1.25rem 0.8rem;
   position: sticky;
   top: 0;
   z-index: 10;
-  box-shadow: var(--sombra);
+  background: rgba(246, 244, 236, 0.82);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom: 1px solid var(--borde-suave);
+}
+
+.inner {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 0.7rem 1rem 0.8rem;
 }
 
 .top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.7rem;
 }
 
 .marca {
   display: flex;
   align-items: center;
   gap: 0.65rem;
+  min-width: 0;
 }
 
 .logoImg {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -31,51 +38,56 @@
 .marcaTexto {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  min-width: 0;
 }
 
 .marcaNombre {
-  font-size: 0.82rem;
+  font-family: var(--fuente-titulo);
+  font-size: 0.95rem;
   font-weight: 700;
-  color: var(--texto);
-  line-height: 1.2;
+  color: var(--verde-dark);
+  line-height: 1.15;
 }
 
 .marcaSub {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   color: var(--texto-suave);
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
 .contador {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--verde-dark);
-  background: var(--verde-light);
-  padding: 0.2rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--texto-suave);
+  background: var(--superficie);
+  border: 1px solid var(--borde-suave);
+  padding: 0.3rem 0.75rem;
   border-radius: var(--radio-pill);
   white-space: nowrap;
 }
 
-.barraFondo {
-  height: 6px;
-  background: #E2E8F0;
-  border-radius: var(--radio-pill);
-  overflow: hidden;
-  margin-bottom: 0.5rem;
+.contador strong {
+  color: var(--verde);
+  font-weight: 800;
 }
 
-.barraRelleno {
-  height: 100%;
-  background: linear-gradient(90deg, #1A6128 0%, #7BBD20 100%);
-  border-radius: var(--radio-pill);
-  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+.segmentos {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 5px;
 }
 
-.tituloSeccion {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--verde-dark);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.segmento {
+  height: 5px;
+  border-radius: var(--radio-pill);
+  background: #DAD7C6;
+  transition: background 0.4s ease, transform 0.4s ease;
+}
+
+.segmento.hecho {
+  background: var(--verde);
+}
+
+.segmento.actual {
+  background: linear-gradient(90deg, var(--verde), var(--lima));
 }

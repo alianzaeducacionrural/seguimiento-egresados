@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { cargarInstituciones } from '../../utils/api'
+import Icono from '../components/Icono'
 import styles from '../Admin.module.css'
 
 function enlaceInstitucion(inst) {
@@ -47,32 +48,45 @@ export default function Instituciones() {
   }
 
   if (cargando) return <p className={styles.aviso}>Cargando instituciones…</p>
-  if (error) return <p className={styles.avisoError}>⚠ {error}</p>
+  if (error) return <p className={styles.avisoError}><Icono nombre="alerta" size={18} /> {error}</p>
 
   const sinToken = instituciones.some(i => !i.token)
 
   return (
     <div>
-      <h1 className={styles.pageTitulo}>Instituciones</h1>
-      <p className={styles.aviso}>
-        Cada institución tiene un enlace propio con su token para consultar
-        únicamente los egresados de esa institución.
-      </p>
+      <div className={styles.pageHead}>
+        <div>
+          <p className={styles.pageEyebrow}>Acceso por institución</p>
+          <h1 className={styles.pageTitulo}>Instituciones</h1>
+          <p className={styles.pageSub}>
+            Cada institución tiene un enlace propio para ver únicamente los indicadores de sus egresados.
+          </p>
+        </div>
+      </div>
       {sinToken && (
         <p className={styles.avisoError}>
-          Hay instituciones sin token. Ejecuta <code>generarTokensFaltantes()</code>{' '}
-          en el editor de Google Apps Script.
+          <Icono nombre="alerta" size={18} />
+          <span>
+            Hay instituciones sin token. Ejecuta <code>generarTokensFaltantes()</code>{' '}
+            en el editor de Google Apps Script.
+          </span>
         </p>
       )}
 
-      <div className={styles.filtros}>
-        <input
-          type="search"
-          className="control"
-          placeholder="Buscar institución o municipio…"
-          value={busqueda}
-          onChange={e => setBusqueda(e.target.value)}
-        />
+      <div className={styles.filtrosBarra}>
+        <label className={styles.filtroCampo}>
+          <span>Buscar institución o municipio</span>
+          <input
+            type="search"
+            className="control"
+            placeholder="Ej: Riosucio"
+            value={busqueda}
+            onChange={e => setBusqueda(e.target.value)}
+          />
+        </label>
+        <div className={styles.filtrosPie}>
+          <span className={styles.filtrosConteo}>{filtradas.length} de {instituciones.length} instituciones</span>
+        </div>
       </div>
 
       <div className={styles.tablaWrap}>
@@ -91,15 +105,16 @@ export default function Instituciones() {
               return (
                 <tr key={clave}>
                   <td>{inst.municipio || '—'}</td>
-                  <td>{inst.nombre || '—'}</td>
+                  <td><strong>{inst.nombre || '—'}</strong></td>
                   <td><code>{inst.token || '—'}</code></td>
                   <td>
                     <button
-                      className={styles.btnCopiar}
+                      className={`${styles.btnCopiar} ${copiado === clave ? styles.copiado : ''}`}
                       onClick={() => copiar(inst)}
                       disabled={!inst.token}
                     >
-                      {copiado === clave ? '✓ Copiado' : 'Copiar enlace'}
+                      <Icono nombre={copiado === clave ? 'check' : 'copiar'} size={14} />
+                      {copiado === clave ? 'Copiado' : 'Copiar enlace'}
                     </button>
                   </td>
                 </tr>

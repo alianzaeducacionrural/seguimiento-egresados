@@ -51,11 +51,11 @@ The app lives under `basename="/seguimiento-egresados/"` (set in both `src/App.j
 | Path | Component | Description |
 |---|---|---|
 | `/` | `Formulario` | 8-section graduate form (public) |
-| `/admin` | `Dashboard` | Summary cards (charts land in Mes 7) |
+| `/admin` | `Dashboard` | KPIs + Recharts charts with cross filters (municipio → institución → año) |
 | `/admin/egresados` | `TablaEgresados` | Searchable/filterable table, 20/page, CSV export |
 | `/admin/egresados/:id` | `DetalleEgresado` | Individual record detail (`:id` = original index) |
 | `/admin/instituciones` | `Instituciones` | Institution list with shareable token links |
-| `/admin/institucion?token=xxx` | _(planned, Mes 7)_ | Institution-scoped reduced view |
+| `/admin/institucion?token=xxx` | `VistaInstitucion` | Institution-scoped reduced view (no sidebar, token-filtered via GAS) |
 | `*` | redirect → `/` | Unknown paths |
 
 The admin section detects a `?token=xxx` query param to filter records per institution. No login — auth is token-based.
@@ -82,16 +82,23 @@ src/
 └── admin/
     ├── AdminLayout.jsx       # sidebar + header + <Outlet>; loads registros once, shares via useOutletContext()
     ├── Admin.module.css      # shared styles for all admin views
+    ├── components/
+    │   ├── Icono.jsx            # inline SVG icon set
+    │   ├── FiltrosCruzados.jsx  # municipio → institución → año cascade bar
+    │   ├── PanelIndicadores.jsx # KPIs + Recharts (shared by Dashboard and VistaInstitucion)
+    │   └── Panel.module.css
     ├── hooks/useEgresados.js # GET ?action=registros; adds stable _id (original index)
     ├── utils/
     │   ├── formatear.js      # coded-value → label maps, date formatting
     │   ├── campos.js         # answer structure grouped by section (drives detail view + CSV)
+    │   ├── indicadores.js    # filtrarRegistros, opcionesFiltro, calcularIndicadores
     │   └── exportarCsv.js    # client-side CSV download of filtered rows
     └── views/
-        ├── Dashboard.jsx        # /admin — summary cards (charts deferred to Mes 7)
+        ├── Dashboard.jsx        # /admin — filters + PanelIndicadores
         ├── TablaEgresados.jsx   # /admin/egresados — search + municipio/institución/año filters, 20/page, CSV
         ├── DetalleEgresado.jsx  # /admin/egresados/:id — all answers by section
-        └── Instituciones.jsx    # /admin/instituciones — municipio/institución/token + copy-link
+        ├── Instituciones.jsx    # /admin/instituciones — municipio/institución/token + copy-link
+        └── VistaInstitucion.jsx # /admin/institucion?token= — reduced public-by-token view
 ```
 
 ## Google Apps Script — Critical Notes
@@ -118,6 +125,10 @@ src/
 | 8 | Contact & data-treatment consent (Law 1581) |
 
 Key conditional logic: fields in sections 2–4 are gated behind yes/no questions (e.g., continued studies, currently employed, has an enterprise). `validarSeccion()` in `src/utils/validaciones.js` handles required-field checks per section.
+
+## Design System
+
+Tokens live in `src/index.css` (`:root`): cream background `--fondo`, forest green `--verde`/`--verde-dark`/`--verde-deep`, lime `--lima`, coffee `--cafe`, amber `--ambar`; fonts `--fuente-titulo` (Fraunces) and `--fuente` (Plus Jakarta Sans, loaded in `index.html`). Reuse these tokens — don't hardcode colors in new CSS. Admin routes are `React.lazy`-loaded so Recharts stays out of the public form bundle.
 
 ## Code Conventions
 

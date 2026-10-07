@@ -3,18 +3,26 @@
 }
 
 .grupoTitulo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
+  font-weight: 800;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--verde-dark);
-  padding: 0.5rem 0;
-  border-bottom: 2px solid var(--verde-light);
-  margin-bottom: 1.25rem;
+  color: var(--cafe);
+  margin-bottom: 1.4rem;
+}
+
+.grupoTitulo::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--borde-suave);
 }
 
 .separador {
   border: none;
-  border-top: 1px solid var(--borde);
-  margin: 1.75rem 0;
+  border-top: 1px dashed var(--borde);
+  margin: 2rem 0;
 }

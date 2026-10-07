@@ -1,57 +1,47 @@
-import { useOutletContext, Link } from 'react-router-dom'
+import { useMemo, useState } from 'react'
+import { useOutletContext } from 'react-router-dom'
+import FiltrosCruzados from '../components/FiltrosCruzados'
+import PanelIndicadores from '../components/PanelIndicadores'
+import Icono from '../components/Icono'
+import { filtrarRegistros, opcionesFiltro, FILTROS_VACIOS } from '../utils/indicadores'
 import styles from '../Admin.module.css'
 
-function pct(parte, total) {
-  if (!total) return '0%'
-  return `${Math.round((parte / total) * 100)}%`
-}
-
 export default function Dashboard() {
-  const { registros, meta, cargando, error } = useOutletContext()
+  const { registros, cargando, error } = useOutletContext()
+  const [filtros, setFiltros] = useState({ ...FILTROS_VACIOS })
+
+  const opciones = useMemo(() => opcionesFiltro(registros, filtros.municipio), [registros, filtros.municipio])
+  const filtrados = useMemo(() => filtrarRegistros(registros, filtros), [registros, filtros])
 
   if (cargando) return <p className={styles.aviso}>Cargando datos…</p>
-  if (error) return <p className={styles.avisoError}>⚠ {error}</p>
-
-  const total = registros.length
-  const continuaron = registros.filter(r => String(r.s2_continuo_superior).trim() === 'si').length
-  const conUec = registros.filter(r => String(r.s2_estudio_uec).trim() === 'si').length
-  const trabajan = registros.filter(r => {
-    const t = String(r.s3_trabaja).trim()
-    return t === 'si' || t === 'tiempo_completo' || t === 'medio_tiempo'
-  }).length
-  const emprendieron = registros.filter(r => String(r.s4_ha_emprendido).trim() === 'si').length
-
-  const tarjetas = [
-    { valor: total, etiqueta: 'Egresados registrados' },
-    { valor: pct(continuaron, total), etiqueta: 'Continuaron estudios superiores' },
-    { valor: pct(conUec, total), etiqueta: 'Cursaron estudios con la UEC' },
-    { valor: pct(trabajan, total), etiqueta: 'Trabajan actualmente' },
-    { valor: pct(emprendieron, total), etiqueta: 'Han emprendido' },
-  ]
+  if (error) {
+    return (
+      <p className={styles.avisoError}>
+        <Icono nombre="alerta" size={18} /> {error}
+      </p>
+    )
+  }
 
   return (
     <div>
-      <h1 className={styles.pageTitulo}>Resumen</h1>
-      {meta.total === 0 && (
-        <p className={styles.aviso}>Aún no hay respuestas registradas.</p>
-      )}
-
-      <div className={styles.tarjetas}>
-        {tarjetas.map(t => (
-          <div key={t.etiqueta} className={styles.tarjeta}>
-            <span className={styles.tarjetaValor}>{t.valor}</span>
-            <span className={styles.tarjetaEtiqueta}>{t.etiqueta}</span>
-          </div>
-        ))}
+      <div className={styles.pageHead}>
+        <div>
+          <p className={styles.pageEyebrow}>Panel de indicadores</p>
+          <h1 className={styles.pageTitulo}>Resumen general</h1>
+          <p className={styles.pageSub}>
+            Cómo van los egresados del programa Universidad en el Campo en Caldas.
+          </p>
+        </div>
       </div>
 
-      <div className={styles.panelInfo}>
-        <p>
-          Las gráficas e indicadores cruzados se incorporan en el Mes 7.
-          Por ahora puedes consultar el detalle en{' '}
-          <Link to="/admin/egresados" className={styles.enlaceTexto}>la tabla de egresados</Link>.
-        </p>
-      </div>
+      <FiltrosCruzados
+        filtros={filtros}
+        onChange={setFiltros}
+        opciones={opciones}
+        conteo={`Mostrando ${filtrados.length} de ${registros.length} egresados`}
+      />
+
+      <PanelIndicadores registros={filtrados} />
     </div>
   )
 }

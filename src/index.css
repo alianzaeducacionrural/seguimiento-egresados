@@ -1,25 +1,42 @@
-/* ── Variables de diseño ── */
+/* ── Sistema de diseño — "campo cafetero" ── */
 :root {
-  --verde:        #1E7A35;
-  --verde-dark:   #1A6128;
-  --verde-light:  #E2F5E8;
-  --verde-txt:    #1A6128;
-  --lima:         #7BBD20;
-  --lima-light:   #EDF8DA;
-  --naranja:      #EA580C;
-  --naranja-light:#FFF7ED;
-  --fondo:        #F8FAFC;
-  --superficie:   #FFFFFF;
-  --texto:        #0F172A;
-  --texto-suave:  #64748B;
-  --borde:        #CBD5E1;
-  --error:        #DC2626;
-  --error-fondo:  #FEF2F2;
-  --radio:        10px;
-  --radio-pill:   100px;
-  --sombra:       0 1px 3px rgba(15,23,42,0.08), 0 1px 2px rgba(15,23,42,0.04);
-  --sombra-md:    0 4px 20px rgba(15,23,42,0.10);
-  --transicion:   0.15s ease;
+  /* Verdes del logo UEC */
+  --verde:         #0E6B3B;
+  --verde-dark:    #07502B;
+  --verde-deep:    #052E1A;
+  --verde-light:   #E5F2E9;
+  --verde-txt:     #0B5A31;
+  --lima:          #8DC63F;
+  --lima-light:    #F0F8E0;
+
+  /* Acentos cálidos (café y ámbar) */
+  --cafe:          #9A5B2A;
+  --cafe-light:    #F7ECE0;
+  --ambar:         #E5A21B;
+  --naranja:       #D9561E;
+  --naranja-light: #FFF3EA;
+
+  /* Neutros cálidos */
+  --fondo:         #F6F4EC;
+  --superficie:    #FFFFFF;
+  --texto:         #14231A;
+  --texto-suave:   #5E6E63;
+  --borde:         #DDDACB;
+  --borde-suave:   #ECEADF;
+
+  --error:         #C0392B;
+  --error-fondo:   #FDF0EE;
+
+  --radio:         12px;
+  --radio-lg:      20px;
+  --radio-pill:    100px;
+
+  --sombra:        0 1px 2px rgba(6, 40, 22, 0.06), 0 2px 8px rgba(6, 40, 22, 0.05);
+  --sombra-md:     0 1px 2px rgba(6, 40, 22, 0.05), 0 12px 32px -10px rgba(6, 40, 22, 0.18);
+  --transicion:    0.18s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --fuente-titulo: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --fuente:        'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 /* ── Resets ── */
@@ -29,15 +46,28 @@
   padding: 0;
 }
 
-body {
-  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-  line-height: 1.5;
-  color: var(--texto);
-  background: var(--fondo);
-  -webkit-font-smoothing: antialiased;
+html {
+  scroll-behavior: smooth;
 }
 
-h1, h2, h3 { line-height: 1.25; }
+body {
+  font-family: var(--fuente);
+  line-height: 1.55;
+  color: var(--texto);
+  background:
+    radial-gradient(900px 520px at 100% -8%, rgba(141, 198, 63, 0.20), transparent 62%),
+    radial-gradient(760px 520px at -8% 0%, rgba(14, 107, 59, 0.10), transparent 60%),
+    var(--fondo);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 {
+  line-height: 1.2;
+  font-family: var(--fuente-titulo);
+  letter-spacing: -0.01em;
+}
 
 input, select, textarea, button {
   font-family: inherit;
@@ -45,10 +75,17 @@ input, select, textarea, button {
   line-height: inherit;
 }
 
+button { -webkit-tap-highlight-color: transparent; }
+
+:focus-visible {
+  outline: 3px solid rgba(141, 198, 63, 0.7);
+  outline-offset: 2px;
+}
+
 /* ── Campos de formulario (globales) ── */
 
 .campo {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.6rem;
 }
 
 .etiqueta {
@@ -56,55 +93,67 @@ input, select, textarea, button {
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--texto);
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.5rem;
   line-height: 1.4;
 }
 
 .asterisco {
   color: var(--naranja);
-  margin-left: 0.15rem;
+  margin-left: 0.2rem;
 }
 
 .control {
   display: block;
   width: 100%;
-  padding: 0.7rem 0.9rem;
-  border: 2px solid var(--borde);
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--borde);
   border-radius: var(--radio);
   font-size: 0.95rem;
   color: var(--texto);
   background: var(--superficie);
   outline: none;
-  transition: border-color var(--transicion), box-shadow var(--transicion);
+  transition: border-color var(--transicion), box-shadow var(--transicion), background var(--transicion);
   -webkit-appearance: none;
   appearance: none;
 }
 
+.control:hover {
+  border-color: #C9C5B1;
+}
+
 .control:focus {
   border-color: var(--verde);
-  box-shadow: 0 0 0 3px var(--verde-light);
+  box-shadow: 0 0 0 4px rgba(141, 198, 63, 0.28);
 }
 
 .control::placeholder {
   color: var(--texto-suave);
-  opacity: 0.65;
+  opacity: 0.6;
 }
 
 .control:disabled {
-  background: #F1F5F9;
+  background: #F1EFE6;
   cursor: not-allowed;
   opacity: 0.7;
 }
 
 select.control {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235E6E63' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 0.85rem center;
-  padding-right: 2.5rem;
+  background-position: right 0.9rem center;
+  padding-right: 2.6rem;
   cursor: pointer;
 }
 
 textarea.control {
   resize: vertical;
-  min-height: 100px;
+  min-height: 110px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

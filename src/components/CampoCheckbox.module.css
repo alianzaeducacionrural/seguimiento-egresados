@@ -2,35 +2,39 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 0.1rem;
 }
 
 .opcion {
   display: inline-flex;
   align-items: center;
-  padding: 0.55rem 1.25rem;
-  border: 2px solid var(--borde);
-  border-radius: var(--radio);
+  padding: 0.6rem 1.05rem;
+  border: 1.5px solid var(--borde);
+  border-radius: 10px;
   background: var(--superficie);
-  color: var(--texto-suave);
+  color: var(--texto);
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all var(--transicion);
+  transition: border-color var(--transicion), background var(--transicion),
+    color var(--transicion), box-shadow var(--transicion), transform var(--transicion);
   user-select: none;
-  line-height: 1;
+  line-height: 1.2;
 }
 
 .opcion:hover {
   border-color: var(--verde);
-  color: var(--verde-dark);
   background: var(--verde-light);
+  color: var(--verde-dark);
+}
+
+.opcion:active {
+  transform: scale(0.97);
 }
 
 .opcion.activa {
   border-color: var(--verde);
-  background: linear-gradient(135deg, #1E7A35, #1A6128);
-  color: white;
+  background: var(--verde);
+  color: #fff;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(30, 122, 53, 0.3);
+  box-shadow: 0 4px 12px -3px rgba(14, 107, 59, 0.5);
 }

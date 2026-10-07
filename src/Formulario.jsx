@@ -49,13 +49,16 @@ function PantallaError({ mensaje }) {
 function Confirmacion() {
   return (
     <div className={styles.pantallaCentro}>
-      <div className={styles.confirmIcono}>✓</div>
-      <h2 className={styles.confirmTitulo}>¡Gracias por responder!</h2>
-      <p className={styles.confirmTexto}>
-        Tu información fue registrada correctamente. El Comité de Cafeteros de Caldas
-        agradece tu participación en el seguimiento de egresados del programa
-        Universidad en el Campo.
-      </p>
+      <div className={styles.confirmCard}>
+        <img src={logoUEC} alt="" className={styles.confirmLogo} />
+        <div className={styles.confirmIcono}>✓</div>
+        <h2 className={styles.confirmTitulo}>¡Gracias por responder!</h2>
+        <p className={styles.confirmTexto}>
+          Tu información fue registrada correctamente. El Comité de Cafeteros de Caldas
+          agradece tu participación en el seguimiento de egresados del programa
+          Universidad en el Campo.
+        </p>
+      </div>
     </div>
   )
 }
@@ -66,17 +69,23 @@ function PantallaIntro({ onComenzar }) {
     <div className={styles.introWrap}>
       <div className={styles.introCard}>
         <img src={logoUEC} alt="La Universidad en el Campo" className={styles.introLogo} />
+        <span className={styles.introEyebrow}>Comité de Cafeteros de Caldas</span>
         <h1 className={styles.introTitulo}>
-          Seguimiento de Egresados<br />
+          Seguimiento de Egresados
           <span className={styles.introSubtitulo}>Iniciativa La Universidad en el Campo</span>
         </h1>
         <p className={styles.introTexto}>
-          Por favor, responde las siguientes preguntas de manera clara y sincera.
-          La información que proporciones será utilizada exclusivamente para mejorar
-          el modelo de Educación Rural con Escuela Nueva.
+          Cuéntanos cómo te ha ido después del colegio. Tus respuestas nos ayudan a
+          mejorar el modelo de Educación Rural con Escuela Nueva para las próximas
+          generaciones del campo.
         </p>
+        <ul className={styles.introChips}>
+          <li>8 secciones cortas</li>
+          <li>≈ 8 minutos</li>
+          <li>Datos protegidos</li>
+        </ul>
         <button className={styles.btnComenzar} onClick={onComenzar}>
-          Comenzar →
+          Comenzar <span aria-hidden="true">→</span>
         </button>
       </div>
     </div>
@@ -122,7 +131,10 @@ export default function Formulario() {
         <div className={styles.card}>
           <div className={styles.cardHead}>
             <span className={styles.numCircle}>{n}</span>
-            <h2 className={styles.cardTitulo}>{TITULOS[n - 1]}</h2>
+            <div>
+              <p className={styles.cardEyebrow}>Sección {n} de {TOTAL}</p>
+              <h2 className={styles.cardTitulo}>{TITULOS[n - 1]}</h2>
+            </div>
           </div>
           <div className={styles.cardBody}>
             {contenido}
@@ -143,7 +155,7 @@ export default function Formulario() {
               onClick={form.anterior}
               className={styles.btnAnterior}
             >
-              ← Anterior
+              <span aria-hidden="true">←</span> Anterior
             </button>
           )}
           <button
@@ -154,7 +166,7 @@ export default function Formulario() {
           >
             {esUltima
               ? (form.enviando ? 'Enviando…' : 'Enviar formulario')
-              : 'Siguiente →'}
+              : <>Siguiente <span aria-hidden="true">→</span></>}
           </button>
         </div>
       </main>

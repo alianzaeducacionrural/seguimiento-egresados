@@ -20,8 +20,8 @@ El código de Google Apps Script está en `GAS.md`.
 | 4 | Desarrollo | Formulario — Secciones 1 a 4 ✓ |
 | 5 | Desarrollo | Formulario — Secciones 5 a 8 + envío ✓ |
 | 6 | Dashboard | Panel admin — estructura y datos ✓ |
-| 7 | Dashboard | Panel admin — gráficas e indicadores ← **siguiente** |
-| 8 | Cierre | Vistas por institución + pulimiento |
+| 7 | Dashboard | Panel admin — gráficas e indicadores + rediseño visual ✓ |
+| 8 | Cierre | Pulimiento y pruebas internas ← **siguiente** |
 | 9 | Cierre | Pruebas, ajustes y lanzamiento |
 
 ---
@@ -371,6 +371,29 @@ institución y año de graduación.
 
 ### Entregable
 Dashboard completo con gráficas, filtros y vista por institución.
+
+### Estado — completado
+
+- **Dashboard** (`/admin`): `components/PanelIndicadores.jsx` con 5 KPIs
+  (total, % continuaron, % UEC, % trabajan, % emprendieron) y 7 gráficas
+  Recharts: municipio (barras horizontales), sector (dona), continuidad
+  educativa (barras agrupadas), tipo de emprendimiento (dona),
+  ¿recomendaría? (dona), egresados por año (área) y estrategias de
+  Escuela Nueva (barras). Cálculos en `utils/indicadores.js`.
+- **Filtros cruzados** municipio → institución → año (`FiltrosCruzados.jsx`),
+  compartidos por Dashboard, tabla y vista por institución.
+- **Vista por institución** `/admin/institucion?token=xxx`
+  (`views/VistaInstitucion.jsx`): sin sidebar, cabecera con nombre y
+  municipio, mismos KPIs y gráficas filtrados por token; token ausente o
+  inválido → pantalla de error clara.
+- **Rediseño visual completo** ("campo cafetero"): tokens en `index.css`
+  (crema cálido, verde bosque + lima del logo, acento café/ámbar),
+  tipografía Fraunces (títulos) + Plus Jakarta Sans, segmentos de progreso,
+  tarjetas redondeadas, pantalla de intro y confirmación renovadas,
+  sidebar oscuro con iconos SVG, tabla con avatares e insignias, ficha de
+  detalle por secciones.
+- El panel admin se carga con `React.lazy` (Recharts no pesa en el
+  formulario público).
 
 ---
 

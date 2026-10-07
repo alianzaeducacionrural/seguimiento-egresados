@@ -408,14 +408,15 @@ GitHub Actions construye desde la raíz y publica en la rama `gh-pages`.
 
 ## Estado actual del proyecto
 
-Meses 1–6 de 9 completados y desplegados en GitHub Pages:
+Meses 1–7 de 9 completados y desplegados en GitHub Pages:
 
 - Formulario público completo (secciones 1–8) con envío real a Google Sheets.
 - Panel admin (`/admin`) con layout, resumen, tabla de egresados con filtros y
   exportación a CSV, detalle individual y listado de instituciones con tokens.
 
-Siguiente: Mes 7 — gráficas e indicadores (Recharts), filtros cruzados y la
-vista reducida por institución (`/admin/institucion?token=xxx`).
+Mes 7: dashboard con KPIs y gráficas (Recharts), filtros cruzados, vista
+reducida por institución (`/admin/institucion?token=xxx`) y rediseño visual
+completo. Siguiente: Mes 8 — pulimiento y pruebas internas.
 
 > Nota: la estructura real de `src/` es plana para el formulario
 > (`src/components`, `src/sections`, `src/hooks`, `src/utils`) y todo lo del

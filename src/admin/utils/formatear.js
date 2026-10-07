@@ -74,7 +74,7 @@ const MAPA_VALOR = {
 }
 
 // Etiqueta legible de un valor suelto (un token).
-function etiqueta(token) {
+export function etiquetaValor(token) {
   const limpio = String(token).trim()
   if (limpio === '') return ''
   if (MAPA_VALOR[limpio]) return MAPA_VALOR[limpio]
@@ -83,22 +83,29 @@ function etiqueta(token) {
   return texto.charAt(0).toUpperCase() + texto.slice(1)
 }
 
+// Divide una celda multivalor ("a, b") en tokens crudos.
+export function dividirLista(valor) {
+  const bruto = String(valor ?? '').trim()
+  if (!bruto) return []
+  return bruto.split(',').map(t => t.trim()).filter(Boolean)
+}
+
 // Formatea un valor de celda (string simple o lista unida por ", " desde GAS).
 export function formatearValor(valor) {
   if (valor === null || valor === undefined) return '—'
   const bruto = String(valor).trim()
   if (bruto === '') return '—'
   if (bruto.includes(', ')) {
-    return bruto.split(',').map(t => etiqueta(t)).filter(Boolean).join(', ')
+    return bruto.split(',').map(t => etiquetaValor(t)).filter(Boolean).join(', ')
   }
-  return etiqueta(bruto)
+  return etiquetaValor(bruto)
 }
 
 // Versión corta para celdas de tabla (Sí / No / —).
 export function formatearSiNo(valor) {
   const v = String(valor ?? '').trim()
   if (v === '') return '—'
-  return MAPA_VALOR[v] || etiqueta(v)
+  return MAPA_VALOR[v] || etiquetaValor(v)
 }
 
 // timestamp ISO → "dd/mm/aaaa, HH:MM"
@@ -122,4 +129,11 @@ export function formatearFechaCorta(iso) {
   const dd = String(d.getDate()).padStart(2, '0')
   const mm = String(d.getMonth() + 1).padStart(2, '0')
   return `${dd}/${mm}/${d.getFullYear()}`
+}
+
+// "María Gómez Ruiz" → "MR"
+export function iniciales(nombre) {
+  const partes = String(nombre ?? '').trim().split(/\s+/).filter(Boolean)
+  if (!partes.length) return '?'
+  return ((partes[0][0] || '') + (partes.length > 1 ? partes[partes.length - 1][0] : '')).toUpperCase()
 }
