@@ -1,4 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="7" fill="#2d5a1b"/>
-  <text x="16" y="23" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="white" text-anchor="middle">UE</text>
+  <rect width="32" height="32" rx="9" fill="#0E6B3B"/>
+  <path d="M16 6c5.5 2.2 8 6.4 8 10.6 0 4.6-3.4 8.4-8 9.4-4.6-1-8-4.8-8-9.4C8 12.4 10.5 8.2 16 6z" fill="#8DC63F"/>
+  <path d="M16 26V13" stroke="#0E6B3B" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M16 18l3.4-3M16 21l-3.2-2.8" stroke="#0E6B3B" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
