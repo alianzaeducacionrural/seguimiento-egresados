@@ -14,7 +14,10 @@ npm run dev        # Start dev server (localhost:5173)
 npm run build      # Build for production to dist/
 npm run lint       # ESLint
 npm run preview    # Preview production build locally
+npm run gas:push   # Push gas/ to Apps Script (see "Google Apps Script" below for the full deploy flow)
 ```
+
+There is no test suite; verify with `npm run lint` and `npm run build`.
 
 Deployment is automated via GitHub Actions (`.github/workflows/deploy.yml`) to GitHub Pages at `https://alianzaeducacionrural.github.io/seguimiento-egresados/`.
 
@@ -33,7 +36,7 @@ The GAS URL is the "current web app URL" from the Apps Script deployment. It is 
 ```
 React (Vite, GitHub Pages)
    ├── /                    → 8-section graduate survey form
-   └── /admin/*             → Admin dashboard (currently public; token gate planned)
+   └── /admin/*             → Admin dashboard (open access, no key)
 
          ↓ fetch (GET/POST)
 
@@ -103,12 +106,13 @@ src/
 
 ## Google Apps Script — Critical Notes
 
-`gas/Code.gs` + `gas/appsscript.json` are the versioned source of truth; `GAS.md` mirrors the code and documents setup/deploy.
+`gas/Code.gs` + `gas/appsscript.json` are the versioned source of truth; `docs/tecnico/GAS.md` mirrors the code and documents setup/deploy.
 
 - **Deploy with clasp:** `@google/clasp` (global) is authenticated as the sheet owner; `gas/.clasp.json` holds the Script ID. Workflow: `npm run gas:push` → `npm run gas:version -- "msg"` (prints `Created version N`) → `npm run gas:redeploy -- -V N -d "msg"`. Always `redeploy` the **existing** production deployment `AKfycbw2EVV2WxhZ8bI4RxJSqLCLJyfzuaE_FIugP16Pbe4ewAQm6qHRh7M0Wd1VRWuBgCZGMA` (the one behind `VITE_GAS_URL`) — never `clasp deploy`, which mints a new URL. `AKfycbygk…` is the `@HEAD` test deployment (serves the last push).
 - **CORS:** GAS does not support preflight requests. The frontend must send POST with `Content-Type: text/plain` (not `application/json`) to avoid triggering a preflight. The body is still JSON-stringified.
 - **Array fields:** GAS flattens repeated-value fields (checkboxes) by joining with `, ` via the `aplanar()` helper before writing to Sheets.
 - **Token generation:** Run `generarTokensFaltantes()` manually from the Apps Script editor after adding new institutions to the `instituciones` sheet. It writes `url` as `<dominio>/admin/institucion?token=<token>` via the `urlInstitucion()` helper. `migrarUrlsInstituciones()` rewrites every `url` cell if that format ever changes.
+- **Admin access:** `/admin` and `?action=registros|instituciones` are open (deliberate decision; no key). Known exposure: `registros` without a token returns all personal data to anyone with the URL.
 - **GET action routing:** `doGet(e)` switches on `e.parameter.action` (`listas`, `registros`, or `instituciones`). `instituciones` (added Mes 6, live since deployment v4) returns the full institution list with `id`, `municipio`, `nombre`, `token`, `url`.
 
 ## Form — Section Summary
@@ -128,7 +132,9 @@ Key conditional logic: fields in sections 2–4 are gated behind yes/no question
 
 ## Design System
 
-Tokens live in `src/index.css` (`:root`): cream background `--fondo`, forest green `--verde`/`--verde-dark`/`--verde-deep`, lime `--lima`, coffee `--cafe`, amber `--ambar`; fonts `--fuente-titulo` (Fraunces) and `--fuente` (Plus Jakarta Sans, loaded in `index.html`). Reuse these tokens — don't hardcode colors in new CSS. Admin routes are `React.lazy`-loaded so Recharts stays out of the public form bundle.
+Current theme is **"curvas de nivel"** (ink green + lime + topographic contour lines; fonts Bricolage Grotesque / Hanken Grotesk; flat 2px-bordered cards with hard offset shadows). The older description below keeps token *names*, which are unchanged; only values/fonts differ.
+
+Tokens live in `src/index.css` (`:root`): light bone background `--fondo`, forest green `--verde`/`--verde-dark`/`--verde-deep`, lime `--lima`, coffee `--cafe`, amber `--ambar`; fonts `--fuente-titulo` (Bricolage Grotesque) and `--fuente` (Hanken Grotesk, loaded in `index.html`); contour SVGs are `--curvas-claro` / `--curvas-oscuro`. Reuse these tokens — don't hardcode colors in new CSS. Admin routes are `React.lazy`-loaded so Recharts stays out of the public form bundle.
 
 ## Code Conventions
 
@@ -140,6 +146,6 @@ Tokens live in `src/index.css` (`:root`): cream background `--fondo`, forest gre
 
 ## Key Documentation Files
 
-- `PROYECTO.md` — complete technical specification (routes, API contract, Sheets schema, full form field list)
-- `GAS.md` — Google Apps Script setup, deployment steps, and annotated source
-- `docs/PLAN.md` — 9-month implementation roadmap with current status per phase
+- `docs/tecnico/PROYECTO.md` — complete technical specification (routes, API contract, Sheets schema, full form field list)
+- `docs/tecnico/GAS.md` — Google Apps Script setup, deployment steps, and annotated source
+- `docs/plan/PLAN.md` — 9-month implementation roadmap with current status per phase

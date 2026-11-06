@@ -3,8 +3,8 @@
 ## Comité de Cafeteros de Caldas
 
 Este archivo es el resumen ejecutivo del plan de trabajo para Claude Code.
-El contexto técnico completo está en `PROYECTO.md`.
-El código de Google Apps Script está en `GAS.md`.
+El contexto técnico completo está en `../tecnico/PROYECTO.md`.
+El código de Google Apps Script está en `../tecnico/GAS.md`.
 
 ---
 
@@ -21,8 +21,8 @@ El código de Google Apps Script está en `GAS.md`.
 | 5 | Desarrollo | Formulario — Secciones 5 a 8 + envío ✓ |
 | 6 | Dashboard | Panel admin — estructura y datos ✓ |
 | 7 | Dashboard | Panel admin — gráficas e indicadores + rediseño visual ✓ |
-| 8 | Cierre | Pulimiento y pruebas internas ← **siguiente** |
-| 9 | Cierre | Pruebas, ajustes y lanzamiento |
+| 8 | Cierre | Pulimiento y pruebas internas ← **en curso** (rediseño y manejo de errores hechos) |
+| 9 | Cierre | Pruebas, ajustes y lanzamiento — **sin aplicar (a propósito)** |
 
 ---
 
@@ -404,14 +404,20 @@ Sistema completo revisado y probado con el equipo del Comité.
 
 ### Acciones
 
-**1. Revisión del formulario** en móvil, tablet y escritorio.
+**1. Revisión del formulario** en móvil, tablet y escritorio. *(Rediseño visual hecho y revisado en móvil y escritorio.)*
 **2. Verificar lógica condicional** completa en todas las secciones.
 **3. Verificar datos** en Google Sheets tras envíos de prueba.
 **4. Revisión del admin** — gráficas, filtros, exportación, tokens.
-**5. Estados de carga** en todas las peticiones a GAS.
-**6. Manejo de error** si GAS no responde.
+**5. Estados de carga** en todas las peticiones a GAS. ✓
+**6. Manejo de error** si GAS no responde. ✓ (timeout 30 s + mensajes legibles)
 **7. Prueba interna** con el equipo del Comité y ajustes finales.
 **8. Ejecutar `generarTokensFaltantes()`** en GAS para todas las instituciones.
+
+**Añadidos en el Mes 8:** rediseño "curvas de nivel"; documentación reorganizada y guías.
+El panel `/admin` queda de **acceso libre** (decisión del proyecto).
+
+**Pendiente del Mes 8:** publicar el frontend, verificar datos en Sheets con
+envíos de prueba y prueba interna con el equipo.
 
 ### Entregable
 Sistema completo probado internamente, tokens generados para todas las IEs.
@@ -456,7 +462,8 @@ Sistema en producción + documentación de uso entregada.
 
 | Archivo | Contenido |
 |---|---|
-| `PROYECTO.md` | Arquitectura, stack, estructura, formulario completo, API |
-| `GAS.md` | Código completo de Google Apps Script |
-| `PLAN.md` | Este archivo — plan mes a mes con acciones concretas |
-| `docs/Anexo_5__Seguimiento_de_Egresados.pdf` | Formulario físico original |
+| `docs/tecnico/PROYECTO.md` | Arquitectura, stack, estructura, formulario completo, API |
+| `docs/tecnico/GAS.md` | Código de Google Apps Script y seguridad |
+| `docs/plan/PLAN.md` | Este archivo — plan mes a mes |
+| `docs/referencia/Anexo_5_Seguimiento_de_Egresados.pdf` | Formulario físico original (fuente oficial) |
+| `docs/manuales/` | Documento final visual con guía para egresados, preguntas y guía para la coordinación |

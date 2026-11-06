@@ -100,7 +100,7 @@ seguimiento-egresados/          # raíz = app React única
 | Ruta | Vista | Descripción |
 |---|---|---|
 | `/` | Formulario | Formulario para egresados — secciones 1 a 8 |
-| `/admin` | Dashboard | Métricas clave y gráficas resumen |
+| `/admin` | Dashboard | Métricas clave y gráficas resumen (acceso libre, sin clave) |
 | `/admin/egresados` | Tabla | Listado completo con filtros y búsqueda |
 | `/admin/egresados/:id` | Detalle | Todas las respuestas de un registro |
 | `/admin/instituciones` | Instituciones | Ver tokens y copiar enlace por institución |
@@ -408,16 +408,21 @@ GitHub Actions construye desde la raíz y publica en la rama `gh-pages`.
 
 ## Estado actual del proyecto
 
-Meses 1–7 de 9 completados y desplegados en GitHub Pages:
+Meses 1–8 en curso/cerrados; **Mes 9 (lanzamiento) deliberadamente sin aplicar**:
 
 - Formulario público completo (secciones 1–8) con envío real a Google Sheets.
-- Panel admin (`/admin`) con layout, resumen, tabla de egresados con filtros y
-  exportación a CSV, detalle individual y listado de instituciones con tokens.
+- Panel admin con KPIs, 7 gráficas, filtros cruzados, tabla con CSV, detalle,
+  instituciones con tokens y vista reducida por institución.
+- **Rediseño "curvas de nivel"** (formulario y admin): verde tinta, lima y curvas
+  topográficas; tokens en `src/index.css`.
+- **Acceso:** el panel `/admin` es de acceso libre (decisión del proyecto, sin clave).
+  Ojo: `?action=registros` sin token devuelve todos los datos personales a quien conozca la URL.
+- **Robustez:** `src/utils/api.js` aplica timeout de 30 s y mensajes de error legibles.
+- Documentación reorganizada en `docs/` (ver `docs/README.md`) y manuales en `docs/manuales/`.
 
-Mes 7: dashboard con KPIs y gráficas (Recharts), filtros cruzados, vista
-reducida por institución (`/admin/institucion?token=xxx`) y rediseño visual
-completo. Siguiente: Mes 8 — pulimiento y pruebas internas.
+Pendiente: publicar el frontend, pruebas internas con el equipo
+y el Mes 9 (piloto y lanzamiento).
 
 > Nota: la estructura real de `src/` es plana para el formulario
 > (`src/components`, `src/sections`, `src/hooks`, `src/utils`) y todo lo del
-> admin vive bajo `src/admin/`. No existe la carpeta `src/formulario/`.
+> admin vive en `src/admin/`.

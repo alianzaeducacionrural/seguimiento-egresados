@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seguimiento a Egresados UEC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --verde:#0F6B45;--verde-dark:#0A4A30;--ink:#06241A;--lima:#C8F03C;--lima-l:#F3FACB;
+  --cafe:#8A4B1F;--ambar:#F2A900;--bone:#F3F6EF;--card:#fff;--txt:#0B1F16;--suave:#51635A;--borde:#C5CEC1;
+  --h:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;--b:'Hanken Grotesk',system-ui,'Segoe UI',sans-serif;
+}
+:root{color-scheme:light}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--b);background:var(--bone);color:var(--txt);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--verde);font-weight:600;word-break:break-word}
+h1,h2,h3{font-family:var(--h);line-height:1.1;letter-spacing:-.02em}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+/* portada */
+.cover{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='xMidYMid slice'%3E%3Cg fill='none' stroke='%23C8F03C' stroke-opacity='0.16' stroke-width='1.4'%3E%3Cpath d='M1060 120 L1065 129 L1064 139 L1057 146 L1047 151 L1036 154 L1027 157 L1018 160 L1009 162 L1000 163 L991 162 L982 160 L973 158 L962 157 L950 153 L941 147 L936 138 L939 129 L945 120 L952 113 L956 107 L958 100 L959 92 L962 84 L969 77 L979 73 L989 71 L1000 71 L1011 71 L1021 73 L1030 78 L1036 86 L1038 94 L1040 101 L1045 107 L1052 113 L1060 120Z'/%3E%3Cpath d='M1126 120 L1133 139 L1128 157 L1111 171 L1091 181 L1071 187 L1053 194 L1037 200 L1019 204 L1000 205 L982 202 L964 200 L944 198 L921 196 L898 189 L881 175 L876 156 L883 137 L896 120 L907 107 L912 94 L912 79 L914 62 L923 47 L938 35 L958 27 L979 23 L1000 21 L1022 21 L1042 27 L1059 39 L1068 55 L1074 71 L1080 83 L1092 93 L1109 105 L1126 120Z'/%3E%3Cpath d='M1196 120 L1202 148 L1188 175 L1162 195 L1132 209 L1105 220 L1080 231 L1055 241 L1028 246 L1000 246 L973 243 L945 241 L913 241 L877 238 L843 225 L822 202 L820 172 L833 144 L851 120 L862 101 L864 80 L863 57 L868 31 L883 9 L908 -8 L937 -18 L968 -26 L1000 -30 L1033 -29 L1063 -18 L1085 2 L1098 26 L1107 48 L1121 64 L1144 78 L1173 96 L1196 120Z'/%3E%3Cpath d='M1267 120 L1268 158 L1245 191 L1209 217 L1172 236 L1139 253 L1107 269 L1073 282 L1037 287 L1000 286 L964 284 L925 286 L879 287 L830 282 L789 262 L767 228 L770 187 L788 150 L807 120 L815 94 L813 66 L811 33 L820 -1 L843 -29 L877 -50 L916 -64 L957 -75 L1000 -82 L1044 -78 L1082 -60 L1109 -31 L1126 -0 L1141 25 L1165 44 L1202 61 L1241 86 L1267 120Z'/%3E%3Cpath d='M1339 120 L1331 167 L1298 207 L1254 237 L1212 262 L1174 286 L1135 307 L1092 321 L1046 327 L1000 326 L954 328 L903 333 L843 337 L783 327 L736 297 L717 251 L725 200 L747 156 L764 120 L765 87 L758 49 L756 7 L771 -33 L804 -67 L847 -91 L895 -111 L946 -126 L1000 -134 L1054 -125 L1100 -99 L1131 -61 L1152 -25 L1176 2 L1215 21 L1266 43 L1314 76 L1339 120Z'/%3E%3Cpath d='M1408 120 L1390 175 L1347 221 L1298 257 L1252 289 L1209 319 L1162 345 L1109 360 L1054 365 L1000 367 L944 374 L879 385 L805 390 L735 373 L686 331 L672 271 L686 211 L708 161 L718 120 L710 79 L699 32 L700 -19 L724 -66 L766 -104 L817 -134 L873 -159 L934 -179 L1000 -185 L1064 -169 L1115 -133 L1150 -88 L1178 -50 L1215 -24 L1270 -5 L1335 23 L1388 65 L1408 120Z'/%3E%3Cpath d='M1473 120 L1444 183 L1394 235 L1341 278 L1293 317 L1245 353 L1188 381 L1126 396 L1062 403 L1000 410 L933 425 L854 442 L766 444 L688 417 L642 360 L634 289 L651 221 L669 167 L668 120 L651 71 L637 14 L644 -44 L677 -97 L727 -140 L786 -177 L850 -209 L922 -232 L1000 -234 L1073 -209 L1129 -163 L1169 -114 L1206 -76 L1259 -54 L1331 -33 L1408 1 L1461 55 L1473 120Z'/%3E%3Cpath d='M1532 120 L1493 190 L1439 248 L1386 298 L1336 345 L1280 387 L1214 416 L1142 431 L1071 441 L1000 456 L920 481 L826 502 L727 499 L645 458 L603 386 L602 304 L618 231 L626 173 L612 120 L587 62 L574 -4 L589 -70 L631 -128 L688 -177 L754 -221 L827 -260 L911 -284 L1000 -280 L1080 -244 L1141 -190 L1187 -139 L1237 -106 L1308 -87 L1398 -64 L1483 -21 L1532 45 L1532 120Z'/%3E%3Cpath d='M1586 120 L1540 196 L1485 261 L1432 320 L1378 374 L1314 419 L1237 449 L1157 465 L1080 481 L1000 508 L907 543 L798 565 L689 552 L607 494 L571 408 L573 317 L585 241 L579 179 L551 120 L521 52 L512 -22 L536 -94 L585 -158 L648 -215 L720 -268 L803 -313 L900 -334 L1000 -320 L1087 -273 L1152 -213 L1206 -166 L1273 -140 L1364 -124 L1470 -97 L1557 -42 L1598 36 L1586 120Z'/%3E%3Cpath d='M1636 120 L1586 203 L1532 275 L1480 342 L1421 402 L1346 450 L1259 480 L1173 500 L1089 526 L1000 566 L892 609 L769 628 L653 601 L575 525 L545 425 L547 329 L548 252 L526 187 L486 120 L453 43 L451 -40 L484 -118 L540 -189 L607 -255 L684 -317 L779 -365 L890 -380 L1000 -354 L1092 -297 L1162 -236 L1228 -196 L1314 -179 L1426 -166 L1543 -131 L1628 -63 L1658 27 L1636 120Z'/%3E%3Cpath d='M1681 120 L1632 209 L1581 289 L1528 364 L1461 430 L1375 478 L1281 509 L1189 536 L1100 576 L1000 630 L877 679 L741 689 L622 644 L548 551 L523 440 L520 342 L506 264 L466 195 L416 120 L386 33 L392 -57 L433 -142 L492 -221 L562 -297 L648 -368 L757 -415 L881 -421 L1000 -382 L1097 -318 L1174 -261 L1254 -233 L1361 -225 L1492 -210 L1616 -164 L1694 -82 L1712 20 L1681 120Z'/%3E%3Cpath d='M1726 120 L1679 216 L1633 304 L1577 386 L1499 455 L1403 504 L1302 538 L1207 576 L1113 632 L1000 700 L861 749 L715 747 L596 680 L528 570 L504 453 L490 355 L457 278 L401 204 L346 120 L320 24 L336 -73 L381 -166 L442 -255 L515 -342 L612 -418 L735 -461 L873 -455 L1000 -404 L1101 -338 L1187 -291 L1286 -276 L1415 -275 L1561 -256 L1686 -197 L1754 -100 L1760 13 L1726 120Z'/%3E%3Cpath d='M1770 120 L1730 223 L1685 320 L1623 408 L1534 478 L1428 528 L1324 569 L1228 622 L1127 697 L1000 775 L846 819 L692 797 L575 709 L512 586 L484 466 L456 371 L402 294 L332 214 L275 120 L258 15 L281 -89 L328 -190 L388 -291 L467 -388 L576 -467 L717 -502 L867 -481 L1000 -421 L1106 -359 L1203 -327 L1322 -327 L1472 -330 L1629 -302 L1750 -227 L1807 -115 L1804 7 L1770 120Z'/%3E%3Cpath d='M1817 120 L1784 231 L1738 335 L1666 427 L1564 499 L1452 551 L1348 603 L1253 675 L1143 768 L1000 852 L832 884 L673 839 L559 731 L498 598 L462 481 L414 390 L341 312 L261 224 L207 120 L198 7 L225 -106 L271 -217 L331 -329 L417 -435 L543 -513 L702 -535 L863 -501 L1000 -436 L1111 -384 L1223 -371 L1364 -385 L1533 -388 L1695 -347 L1809 -254 L1854 -129 L1846 1 L1817 120Z'/%3E%3Cpath d='M1867 120 L1839 238 L1789 350 L1704 445 L1592 517 L1478 575 L1377 643 L1280 736 L1160 845 L1000 928 L819 942 L658 873 L548 746 L485 611 L436 499 L366 413 L275 331 L190 234 L142 120 L140 -1 L168 -122 L210 -245 L271 -370 L369 -482 L515 -552 L690 -560 L860 -514 L1000 -452 L1118 -417 L1248 -424 L1410 -449 L1594 -446 L1757 -388 L1860 -277 L1896 -141 L1889 -5 L1867 120Z'/%3E%3Cpath d='M194 740 L190 750 L182 758 L173 765 L166 771 L158 776 L149 781 L140 783 L130 784 L120 785 L110 787 L98 789 L84 790 L72 786 L64 778 L62 767 L65 756 L68 747 L69 740 L67 732 L64 724 L65 715 L70 706 L78 700 L87 694 L97 689 L108 686 L120 685 L131 688 L140 695 L147 703 L152 709 L160 713 L170 717 L182 722 L191 730 L194 740Z'/%3E%3Cpath d='M266 740 L256 759 L241 775 L225 789 L211 801 L196 812 L178 821 L159 825 L139 827 L120 831 L99 837 L74 842 L46 842 L23 832 L11 813 L9 791 L14 771 L18 754 L16 740 L10 724 L6 707 L9 689 L20 673 L35 659 L53 648 L73 637 L96 630 L120 631 L142 640 L159 654 L171 669 L184 679 L202 685 L226 691 L249 702 L264 720 L266 740Z'/%3E%3Cpath d='M335 740 L318 768 L297 792 L277 812 L257 832 L234 849 L207 860 L177 866 L149 871 L120 879 L87 890 L48 899 L8 896 L-23 877 L-38 846 L-38 813 L-33 784 L-32 761 L-40 740 L-51 716 L-55 689 L-48 662 L-30 639 L-7 619 L19 600 L49 584 L84 575 L120 579 L152 595 L176 617 L195 636 L218 647 L249 653 L287 663 L320 682 L337 709 L335 740Z'/%3E%3Cpath d='M399 740 L377 776 L352 808 L329 836 L303 863 L271 884 L234 897 L195 906 L159 915 L120 931 L74 949 L21 958 L-31 949 L-67 919 L-82 876 L-81 833 L-78 798 L-85 769 L-101 740 L-115 707 L-118 671 L-104 636 L-80 606 L-50 578 L-16 551 L24 530 L72 521 L120 531 L161 555 L192 583 L219 603 L254 612 L301 618 L352 633 L392 661 L408 699 L399 740Z'/%3E%3Cpath d='M461 740 L435 784 L408 824 L381 861 L348 893 L307 918 L260 934 L214 946 L169 963 L120 987 L60 1011 L-7 1019 L-68 1000 L-107 956 L-121 902 L-121 851 L-124 811 L-141 777 L-164 740 L-181 698 L-180 653 L-160 611 L-130 572 L-95 535 L-53 501 L-0 476 L61 470 L120 487 L169 519 L207 550 L245 567 L295 573 L358 580 L420 601 L463 640 L475 690 L461 740Z'/%3E%3Cpath d='M518 740 L491 792 L464 840 L433 885 L392 923 L341 950 L285 969 L232 987 L180 1014 L120 1049 L46 1077 L-35 1080 L-102 1048 L-142 990 L-155 925 L-160 869 L-174 825 L-201 785 L-232 740 L-247 688 L-241 635 L-216 585 L-182 537 L-142 491 L-90 449 L-24 423 L50 424 L120 449 L176 487 L222 516 L273 528 L340 530 L419 539 L490 569 L531 620 L537 681 L518 740Z'/%3E%3Cpath d='M575 740 L549 800 L521 857 L485 909 L434 951 L373 981 L310 1003 L253 1031 L193 1072 L120 1116 L31 1145 L-61 1137 L-132 1090 L-172 1018 L-187 946 L-200 888 L-227 841 L-266 794 L-300 740 L-313 679 L-301 617 L-273 559 L-236 501 L-190 445 L-127 397 L-47 373 L41 382 L120 416 L183 456 L238 480 L305 484 L390 482 L483 496 L558 538 L595 602 L596 673 L575 740Z'/%3E%3Cpath d='M631 740 L607 809 L579 874 L535 932 L474 977 L403 1010 L336 1040 L275 1080 L207 1135 L120 1187 L16 1212 L-85 1190 L-159 1126 L-198 1043 L-218 967 L-243 908 L-285 858 L-334 804 L-369 740 L-378 670 L-361 600 L-331 532 L-292 463 L-240 397 L-164 347 L-67 328 L33 347 L120 387 L190 424 L257 438 L341 433 L445 431 L548 453 L623 508 L655 584 L651 665 L631 740Z'/%3E%3Cpath d='M688 740 L667 817 L635 890 L582 953 L510 1002 L433 1039 L365 1079 L300 1135 L222 1204 L120 1260 L2 1276 L-106 1237 L-181 1157 L-222 1066 L-251 989 L-291 930 L-347 876 L-403 814 L-437 740 L-441 661 L-422 582 L-392 503 L-352 423 L-290 349 L-198 299 L-85 289 L27 317 L120 360 L197 389 L279 391 L382 377 L501 377 L611 411 L683 480 L710 568 L705 658 L688 740Z'/%3E%3Cpath d='M747 740 L728 826 L690 906 L625 973 L544 1025 L465 1068 L396 1123 L328 1197 L238 1278 L120 1333 L-11 1334 L-124 1276 L-199 1183 L-245 1088 L-287 1013 L-344 954 L-413 895 L-473 824 L-503 740 L-503 652 L-485 564 L-457 473 L-414 382 L-339 302 L-229 257 L-100 257 L21 293 L120 333 L206 349 L304 336 L426 317 L558 322 L671 370 L739 454 L761 553 L758 650 L747 740Z'/%3E%3Cpath d='M808 740 L788 834 L741 921 L664 991 L577 1047 L499 1101 L432 1173 L359 1265 L255 1354 L120 1403 L-22 1385 L-138 1308 L-216 1205 L-269 1111 L-327 1040 L-401 981 L-481 915 L-541 833 L-567 740 L-566 643 L-551 545 L-526 441 L-477 340 L-385 258 L-255 220 L-111 232 L17 271 L120 303 L217 302 L332 274 L472 252 L615 268 L727 333 L789 431 L811 539 L813 642 L808 740Z'/%3E%3C/g%3E%3C/svg%3E") center/cover no-repeat,var(--ink);color:#fff;padding:56px 0 64px;border-bottom:4px solid var(--lima)}
+.cover .eyebrow{color:var(--lima);font-weight:800;letter-spacing:.16em;text-transform:uppercase;font-size:.78rem}
+.cover h1{font-size:clamp(2.4rem,8vw,4.6rem);font-weight:800;margin:.5rem 0 1rem;max-width:12ch}
+.cover p.lead{max-width:56ch;font-size:1.1rem;color:rgba(255,255,255,.85)}
+.cover .pills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.4rem}
+.pill{font-size:.8rem;font-weight:700;color:var(--lima);border:1.5px solid rgba(200,240,60,.55);padding:.3rem .8rem;border-radius:99px}
+.cover .linkbtn{display:inline-block;margin-top:1.6rem;margin-right:.6rem;background:var(--lima);color:var(--ink);padding:.8rem 1.4rem;border-radius:10px;font-weight:800;text-decoration:none;box-shadow:4px 4px 0 rgba(255,255,255,.9)}
+.cover .linkbtn.alt{background:transparent;color:#fff;border:2px solid #fff;box-shadow:none}
+/* nav */
+nav.toc{position:sticky;top:0;z-index:5;background:var(--ink);border-bottom:2px solid var(--lima)}
+nav.toc .wrap{display:flex;gap:.2rem;overflow-x:auto;padding:0 8px}
+nav.toc a{color:#fff;text-decoration:none;font-size:.85rem;padding:.8rem .8rem;white-space:nowrap;font-weight:700}
+nav.toc a:hover{color:var(--lima)}
+section{padding:48px 0 8px}
+section>.wrap>h2{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:800;margin-bottom:.4rem}
+.kicker{color:var(--cafe);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:.72rem;margin-bottom:.3rem}
+.intro{color:var(--suave);max-width:70ch;margin-bottom:1.4rem}
+h3{font-size:1.35rem;font-weight:800;margin:1.8rem 0 .6rem}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:1.2rem 1.3rem;margin:1rem 0}
+.hard{box-shadow:4px 4px 0 var(--ink)}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.grid .card{margin:0}
+table{width:100%;border-collapse:collapse;background:var(--card);border:2px solid var(--ink);border-radius:14px;overflow:hidden;font-size:.92rem;margin:1rem 0}
+th{background:var(--lima);color:var(--ink);text-align:left;padding:.6rem .8rem;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase}
+td{padding:.6rem .8rem;border-top:1px solid var(--borde);vertical-align:top}
+.tablewrap{overflow-x:auto}
+figure{margin:1.2rem 0}
+figure img{display:block;width:100%;height:auto;border:2px solid var(--ink);border-radius:12px;box-shadow:5px 5px 0 var(--ink);background:#fff}
+figure.phone{max-width:300px}
+figcaption{font-size:.85rem;color:var(--suave);margin-top:.6rem}
+.duo{display:grid;gap:1.4rem;grid-template-columns:1fr;align-items:start}
+@media(min-width:760px){.duo{grid-template-columns:1fr 300px}}
+.steps{list-style:none;counter-reset:s;margin:1rem 0}
+.steps li{counter-increment:s;display:flex;gap:.9rem;margin:.8rem 0;align-items:flex-start}
+.steps li::before{content:counter(s);flex:none;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--lima);font-family:var(--h);font-weight:800;display:grid;place-items:center}
+.tip,.warn{border-left:6px solid var(--verde);background:var(--lima-l);padding:.8rem 1rem;border-radius:0 10px 10px 0;margin:1rem 0;font-size:.95rem}
+.warn{border-color:var(--ambar);background:color-mix(in srgb,var(--ambar) 16%,var(--card))}
+code{background:color-mix(in srgb,var(--verde) 12%,var(--card));padding:.05rem .4rem;border-radius:6px;font-size:.88em;word-break:break-all}
+.sw{display:flex;flex-wrap:wrap;gap:.7rem;margin:1rem 0}
+.sw div{width:120px;border:2px solid var(--ink);border-radius:10px;overflow:hidden;font-size:.75rem;background:var(--card)}
+.sw i{display:block;height:54px}.sw span{display:block;padding:.35rem .5rem;font-weight:700}
+.diagram{width:100%;height:auto;margin:1rem 0}
+.diagram text{font-family:var(--b);fill:var(--txt)}
+.faq details{background:var(--card);border:2px solid var(--ink);border-radius:12px;margin:.6rem 0;padding:.7rem 1rem}
+.faq summary{font-weight:700;cursor:pointer}
+footer{margin-top:56px;background:var(--ink);color:rgba(255,255,255,.8);padding:28px 0;font-size:.9rem}
+footer a{color:var(--lima)}
+.pill-dark{display:inline-block;background:var(--ink);color:var(--lima);font-weight:800;font-size:.75rem;padding:.15rem .6rem;border-radius:99px}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff;font-size:10.5pt}
+  nav.toc{display:none}
+  section{break-before:page;padding-top:0}
+  .cover{break-after:page;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  figure,.card,table,.faq details,.steps li{break-inside:avoid}
+  figure img{max-height:230mm;width:auto;max-width:100%}
+  figure.phone img{max-height:150mm}
+  .duo{grid-template-columns:1fr 300px}
+}
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="wrap">
+    <p class="eyebrow">Comité de Cafeteros de Caldas · La Universidad en el Campo</p>
+    <h1>Seguimiento a Egresados</h1>
+    <p class="lead">Una herramienta para que cada egresado cuente cómo le ha ido después del colegio, y para que el programa conozca, con datos reales, qué está funcionando y qué se puede mejorar. Esta guía explica para qué sirve y cómo usarla paso a paso.</p>
+    <div class="pills"><span class="pill">Cuestionario de 8 secciones</span><span class="pill">Panel de resultados</span><span class="pill">Resultados por colegio</span><span class="pill">Fácil de usar en celular</span></div>
+    <a class="linkbtn" href="https://alianzaeducacionrural.github.io/seguimiento-egresados/">Abrir el cuestionario →</a>
+    <a class="linkbtn alt" href="https://alianzaeducacionrural.github.io/seguimiento-egresados/admin">Panel de la coordinación</a>
+  </div>
+</header>
+
+<nav class="toc"><div class="wrap">
+  <a href="#proposito">Para qué sirve</a><a href="#enlaces">Enlaces</a><a href="#usuario">Guía para egresados</a><a href="#preguntas">Las preguntas</a><a href="#uso">Guía para la coordinación</a>
+</div></nav>
+
+<section id="enlaces"><div class="wrap">
+  <p class="kicker">Todo en un lugar</p>
+  <h2>Enlaces del proyecto</h2>
+  <p class="intro">Estas son las direcciones que necesita cada persona. Guárdalas o compártelas según su rol.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Recurso</th><th>Enlace</th><th>Quién lo usa</th></tr>
+    <tr><td><b>Cuestionario para egresados</b></td><td><a href="https://alianzaeducacionrural.github.io/seguimiento-egresados/">https://alianzaeducacionrural.github.io/seguimiento-egresados/</a></td><td>Egresados</td></tr>
+    <tr><td><b>Panel de la coordinación</b></td><td><a href="https://alianzaeducacionrural.github.io/seguimiento-egresados/admin">https://alianzaeducacionrural.github.io/seguimiento-egresados/admin</a></td><td>Coordinación del programa</td></tr>
+  </table></div>
+</div></section>
+
+<section id="proposito"><div class="wrap">
+  <p class="kicker">El propósito</p>
+  <h2>Para qué sirve esta herramienta</h2>
+  <p class="intro">El programa <b>La Universidad en el Campo</b> forma a jóvenes del campo caldense. Esta herramienta existe para saber qué pasó con ellos después: si siguieron estudiando, si trabajan, si emprendieron y qué opinan de lo que vivieron en el colegio.</p>
+
+  <svg class="diagram" viewBox="0 0 960 190" role="img" aria-label="Tres pasos: el egresado responde, la información se reúne, y la coordinación y las instituciones ven los resultados">
+    <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#06241A"/></marker></defs>
+    <g stroke="#06241A" stroke-width="2.5">
+      <rect x="10" y="45" width="270" height="100" rx="14" fill="#C8F03C"/>
+      <rect x="345" y="45" width="270" height="100" rx="14" fill="#fff"/>
+      <rect x="680" y="45" width="270" height="100" rx="14" fill="#06241A"/>
+      <g fill="none" marker-end="url(#ar)"><path d="M280 95H341"/><path d="M615 95H676"/></g>
+    </g>
+    <g font-weight="800" font-size="20" text-anchor="middle">
+      <text x="145" y="88">1. El egresado responde</text><text x="480" y="88">2. Se reúne la información</text><text x="815" y="88" style="fill:#C8F03C">3. Se ven los resultados</text>
+    </g>
+    <g font-size="14" text-anchor="middle">
+      <text x="145" y="114">en unos 8 minutos, desde el celular</text><text x="480" y="114">de forma ordenada y segura</text><text x="815" y="114" style="fill:#fff">gráficas, listados y reportes</text>
+    </g>
+  </svg>
+
+  <div class="grid">
+    <div class="card hard"><h3 style="margin-top:0">Para el egresado</h3><p>Un cuestionario corto y amable que se adapta al celular. Si una pregunta no aplica a tu caso, simplemente no aparece.</p></div>
+    <div class="card hard"><h3 style="margin-top:0">Para la coordinación</h3><p>Un panel con indicadores, gráficas con filtros, listado de egresados, fichas individuales y descarga de reportes.</p></div>
+    <div class="card hard"><h3 style="margin-top:0">Para cada institución</h3><p>Un enlace propio que muestra solo a los egresados de su colegio. No necesita usuario ni contraseña.</p></div>
+  </div>
+
+  <h3>Qué se logra con esta información</h3>
+  <ul style="padding-left:1.2rem">
+    <li>Conocer cuántos egresados siguieron estudiando y dónde.</li>
+    <li>Saber en qué sectores trabajan y cuántos han creado su propio negocio.</li>
+    <li>Escuchar qué estrategias del colegio les sirvieron y qué mejorarían.</li>
+    <li>Tomar decisiones para fortalecer la educación rural con Escuela Nueva.</li>
+  </ul>
+</div></section>
+
+<section id="usuario"><div class="wrap">
+  <p class="kicker">Para egresados</p>
+  <h2>Guía para egresados</h2>
+  <p class="intro">Responder toma unos 8 minutos. No necesitas crear cuenta ni descargar nada.</p>
+
+  <div class="duo">
+    <div>
+      <h3 style="margin-top:0">Antes de empezar</h3>
+      <ul style="padding-left:1.2rem">
+        <li>Ten a la mano tu documento de identidad y, si estudiaste después del colegio, el nombre de tu programa.</li>
+        <li>Puedes usar el celular o un computador.</li>
+        <li>Tus respuestas ayudan a mejorar el modelo de Educación Rural con Escuela Nueva.</li>
+      </ul>
+      <ol class="steps">
+        <li><div>Abre <a href="https://alianzaeducacionrural.github.io/seguimiento-egresados/">el enlace del cuestionario</a>.</div></li>
+        <li><div>Lee la bienvenida y toca <b>Comenzar</b>.</div></li>
+        <li><div>Responde cada sección y toca <b>Siguiente</b>. La barra superior te muestra cuánto llevas.</div></li>
+        <li><div>Si te equivocas, toca <b>Anterior</b>: tus respuestas se conservan.</div></li>
+        <li><div>En la sección 8 lee y acepta el tratamiento de datos, y toca <b>Enviar formulario</b>.</div></li>
+        <li><div>Verás una pantalla de confirmación. Ya puedes cerrar la página.</div></li>
+      </ol>
+    </div>
+    <figure class="phone"><img src="img/f3-seccion1-movil.png" alt="Sección 1 del formulario en el celular"><figcaption>La sección 1 en el celular: barra de progreso arriba y botones grandes.</figcaption></figure>
+  </div>
+
+  <figure><img src="img/f1-intro.png" alt="Pantalla de bienvenida del cuestionario"><figcaption>Pantalla de bienvenida: fondo verde con líneas de relieve y un único botón para comenzar.</figcaption></figure>
+
+  <h3>Las 8 secciones</h3>
+  <p class="intro">Aquí un resumen. Todas las preguntas, una por una, están en la sección <a href="#preguntas">Las preguntas</a>.</p>
+  <div class="tablewrap"><table>
+    <tr><th>#</th><th>Sección</th><th>Qué te preguntamos</th></tr>
+    <tr><td>1</td><td>Información general</td><td>Documento, nombre, fecha de nacimiento, municipio, contacto y zona</td></tr>
+    <tr><td>2</td><td>Trayectoria educativa</td><td>Tu colegio, si seguiste estudiando y si cursaste algo con la UEC</td></tr>
+    <tr><td>3</td><td>Situación laboral</td><td>Si trabajas, en qué sector y si tu empleo se relaciona con lo que estudiaste</td></tr>
+    <tr><td>4</td><td>Emprendimiento</td><td>Si has emprendido, el tipo de proyecto y si usaste el Fondo Rotatorio</td></tr>
+    <tr><td>5</td><td>Proyectos pedagógicos</td><td>Cómo viviste los proyectos pedagógicos productivos en el colegio</td></tr>
+    <tr><td>6</td><td>Impacto social</td><td>Cómo ha influido tu formación en tu familia y tu comunidad</td></tr>
+    <tr><td>7</td><td>Retroalimentación</td><td>Qué estrategias te sirvieron y qué mejorarías</td></tr>
+    <tr><td>8</td><td>Contacto y autorización</td><td>Cómo localizarte y tu autorización de datos (Ley 1581 de 2012)</td></tr>
+  </table></div>
+
+  <div class="tip"><b>Preguntas que aparecen solo si aplican.</b> Si respondes que no seguiste estudiando, no te pediremos datos de universidad. Si no trabajas, no verás las preguntas de empleo.</div>
+  <div class="warn"><b>Campos con asterisco (*) son obligatorios.</b> Si falta uno, el formulario te lo indica en rojo antes de pasar a la siguiente sección.</div>
+
+  <h3>Preguntas frecuentes</h3>
+  <div class="faq">
+    <details><summary>Me salió un mensaje de error al cargar el formulario</summary><p>Revisa tu conexión a internet y toca <b>Reintentar</b>. Si tarda demasiado, verás un aviso y podrás intentar de nuevo.</p></details>
+    <details><summary>Toqué "Enviar" y no pasó nada</summary><p>Espera unos segundos: el botón dice "Enviando…". Si aparece un mensaje, léelo. Si dice que tardó demasiado, <b>avisa al equipo antes de enviar de nuevo</b> para no duplicar tu respuesta.</p></details>
+    <details><summary>¿Puedo guardar y seguir después?</summary><p>No: el formulario no guarda borradores. Si cierras la página tendrás que empezar de nuevo.</p></details>
+    <details><summary>¿Quién ve mis datos?</summary><p>El equipo del programa en el Comité de Cafeteros de Caldas y, de forma resumida, tu institución educativa. Los usamos solo para mejorar el programa, según tu autorización en la sección 8.</p></details>
+  </div>
+</div></section>
+
+<section id="preguntas"><div class="wrap">
+  <p class="kicker">El cuestionario completo</p>
+  <h2>Las preguntas</h2>
+  <p class="intro">Estas son las preguntas que verá cada egresado, sección por sección (49 en total). No todas aparecen para todos: algunas solo se muestran según tus respuestas anteriores. Las opciones de respuesta se ven al abrir cada pregunta en el cuestionario.</p>
+  <h3><span class="pill-dark">1</span> Información general <span style="font-weight:600;font-size:.9rem;color:var(--suave)">· 9 preguntas</span></h3>
+  <div class="tablewrap"><table>
+    <tr><th>Pregunta</th><th>Cómo se responde</th><th>Cuándo aparece</th></tr><tr><td>Tipo de documento</td><td>Lista desplegable</td><td>Siempre</td></tr><tr><td>Número de documento</td><td>Texto corto</td><td>Siempre</td></tr><tr><td>Nombre completo</td><td>Texto corto</td><td>Siempre</td></tr><tr><td>Fecha de nacimiento</td><td>Fecha</td><td>Siempre</td></tr><tr><td>Municipio de residencia</td><td>Lista desplegable</td><td>Siempre</td></tr><tr><td>¿Cuál municipio?</td><td>Texto corto</td><td>Si eliges "Otro municipio"</td></tr><tr><td>Correo electrónico</td><td>Texto corto</td><td>Siempre</td></tr><tr><td>Teléfono de contacto</td><td>Texto corto</td><td>Siempre</td></tr><tr><td>¿Resides en zona rural o urbana?</td><td>Una opción</td><td>Siempre</td></tr>
+  </table></div>
+  <h3><span class="pill-dark">2</span> Trayectoria educativa <span style="font-weight:600;font-size:.9rem;color:var(--suave)">· 16 preguntas</span></h3>
+  <div class="tablewrap"><table>
+    <tr><th>Pregunta</th><th>Cómo se responde</th><th>Cuándo aparece</th></tr><tr><td>Municipio donde terminaste el bachillerato</td><td>Lista desplegable</td><td>Siempre</td></tr><tr><td>Institución educativa donde te graduaste</td><td>Lista desplegable</td><td>Siempre (la lista depende del municipio)</td></tr><tr><td>Año de graduación de bachillerato</td><td>Lista desplegable</td><td>Siempre</td></tr><tr><td>¿Continuaste con estudios superiores después del bachillerato?</td><td>Sí / No</td><td>Siempre</td></tr><tr><td>¿Cuál fue la razón principal para no continuar?</td><td>Varias opciones</td><td>Si respondes que no</td></tr><tr><td>¿Cursaste estudios con La Universidad en el Campo (UEC)?</td><td>Sí / No</td><td>Siempre</td></tr><tr><td>Nivel que cursaste</td><td>Varias opciones</td><td>Si cursaste con la UEC</td></tr><tr><td>Institución donde cursaste el programa UEC</td><td>Texto corto</td><td>Si cursaste con la UEC</td></tr><tr><td>Nombre del programa</td><td>Texto corto</td><td>Si cursaste con la UEC</td></tr><tr><td>Universidad que avaló el programa</td><td>Lista desplegable</td><td>Si cursaste con la UEC</td></tr><tr><td>Año de graduación UEC</td><td>Lista desplegable</td><td>Si cursaste con la UEC</td></tr><tr><td>¿Continuaste estudios después de graduarte del UEC?</td><td>Sí / No</td><td>Si cursaste con la UEC</td></tr><tr><td>Nivel de estudios posteriores</td><td>Una opción</td><td>Si continuaste estudiando tras la UEC</td></tr><tr><td>Nombre de la institución</td><td>Texto corto</td><td>Si continuaste estudiando tras la UEC</td></tr><tr><td>Programa o carrera</td><td>Texto corto</td><td>Si continuaste estudiando tras la UEC</td></tr><tr><td>¿Por qué no continuaste estudios después del UEC?</td><td>Varias opciones</td><td>Si no continuaste tras la UEC</td></tr>
+  </table></div>
+  <h3><span class="pill-dark">3</span> Situación laboral <span style="font-weight:600;font-size:.9rem;color:var(--suave)">· 7 preguntas</span></h3>
+  <div class="tablewrap"><table>
+    <tr><th>Pregunta</th><th>Cómo se responde</th><th>Cuándo aparece</th></tr><tr><td>¿Actualmente trabajas?</td><td>Una opción</td><td>Siempre</td></tr><tr><td>¿Has trabajado desde que egresaste?</td><td>Sí / No</td><td>Siempre</td></tr><tr><td>¿Obtuviste tu empleo a través de la Línea de Inserción Laboral?</td><td>Sí / No</td><td>Si trabajas o has trabajado</td></tr><tr><td>¿Tu empleo está relacionado con tu formación?</td><td>Sí / No</td><td>Si trabajas o has trabajado</td></tr><tr><td>Sector en el que trabajas o trabajaste</td><td>Varias opciones</td><td>Si trabajas o has trabajado</td></tr><tr><td>Tipo de contrato en tu empleo más reciente</td><td>Una opción</td><td>Si trabajas o has trabajado</td></tr><tr><td>¿Tu formación en Escuela Nueva contribuyó a obtener tu trabajo?</td><td>Sí / No / En parte</td><td>Si trabajas o has trabajado</td></tr>
+  </table></div>
+  <h3><span class="pill-dark">4</span> Emprendimiento <span style="font-weight:600;font-size:.9rem;color:var(--suave)">· 5 preguntas</span></h3>
+  <div class="tablewrap"><table>
+    <tr><th>Pregunta</th><th>Cómo se responde</th><th>Cuándo aparece</th></tr><tr><td>¿Has emprendido un negocio o proyecto propio?</td><td>Sí / No</td><td>Siempre</td></tr><tr><td>Tipo de emprendimiento</td><td>Varias opciones</td><td>Si has emprendido</td></tr><tr><td>¿Accediste al Fondo Rotatorio?</td><td>Sí / No</td><td>Siempre</td></tr><tr><td>¿Fuiste beneficiario de la Línea de Empresarismo?</td><td>Sí / No</td><td>Siempre</td></tr><tr><td>¿Escuela Nueva te ayudó a desarrollar habilidades para emprender?</td><td>Sí / No</td><td>Siempre</td></tr>
+  </table></div>
+  <h3><span class="pill-dark">5</span> Proyectos pedagógicos <span style="font-weight:600;font-size:.9rem;color:var(--suave)">· 3 preguntas</span></h3>
+  <div class="tablewrap"><table>
+    <tr><th>Pregunta</th><th>Cómo se responde</th><th>Cuándo aparece</th></tr><tr><td>¿Implementaste algún Proyecto Pedagógico Productivo Sustentable (PPPS)?</td><td>Sí / No</td><td>Siempre</td></tr><tr><td>¿En qué área implementaste el PPPS?</td><td>Varias opciones</td><td>Si implementaste uno</td></tr><tr><td>¿Sigues aplicando esos conocimientos actualmente?</td><td>Sí / No</td><td>Si implementaste uno</td></tr>
+  </table></div>
+  <h3><span class="pill-dark">6</span> Impacto social <span style="font-weight:600;font-size:.9rem;color:var(--suave)">· 2 preguntas</span></h3>
+  <div class="tablewrap"><table>
+    <tr><th>Pregunta</th><th>Cómo se responde</th><th>Cuándo aparece</th></tr><tr><td>¿Te consideras parte del empalme generacional del campo colombiano?</td><td>Sí / No</td><td>Siempre</td></tr><tr><td>¿Por qué te consideras parte del empalme generacional?</td><td>Varias opciones</td><td>Si respondes que sí</td></tr>
+  </table></div>
+  <h3><span class="pill-dark">7</span> Retroalimentación <span style="font-weight:600;font-size:.9rem;color:var(--suave)">· 4 preguntas</span></h3>
+  <div class="tablewrap"><table>
+    <tr><th>Pregunta</th><th>Cómo se responde</th><th>Cuándo aparece</th></tr><tr><td>¿Qué estrategias de Escuela Nueva han contribuido más a tu desarrollo?</td><td>Varias opciones</td><td>Siempre</td></tr><tr><td>¿Qué aspectos del programa deberían mejorarse?</td><td>Respuesta abierta</td><td>Siempre</td></tr><tr><td>¿Recomendarías el modelo de Escuela Nueva a otros jóvenes?</td><td>Una opción</td><td>Siempre</td></tr><tr><td>¿Hay algo más que quisieras compartir con nosotros?</td><td>Respuesta abierta</td><td>Siempre</td></tr>
+  </table></div>
+  <h3><span class="pill-dark">8</span> Contacto y autorización <span style="font-weight:600;font-size:.9rem;color:var(--suave)">· 3 preguntas</span></h3>
+  <div class="tablewrap"><table>
+    <tr><th>Pregunta</th><th>Cómo se responde</th><th>Cuándo aparece</th></tr><tr><td>Teléfono de contacto adicional (opcional)</td><td>Texto corto</td><td>Siempre</td></tr><tr><td>Correo electrónico adicional (opcional)</td><td>Texto corto</td><td>Siempre</td></tr><tr><td>Autorización para el tratamiento de tus datos personales (Ley 1581 de 2012)</td><td>Casilla de aceptación</td><td>Siempre — es obligatoria para poder enviar</td></tr>
+  </table></div>
+  <div class="tip"><b>Las preguntas con asterisco (*)</b> son obligatorias; los campos marcados como "opcional" se pueden dejar en blanco.</div>
+</div></section>
+<section id="uso"><div class="wrap">
+  <p class="kicker">Para la coordinación</p>
+  <h2>Guía para la coordinación</h2>
+  <p class="intro">El panel está en <a href="https://alianzaeducacionrural.github.io/seguimiento-egresados/admin">https://alianzaeducacionrural.github.io/seguimiento-egresados/admin</a>. Funciona en computador y en celular.</p>
+
+  <h3>1. Entrar al panel</h3>
+  <p class="intro">Abre el enlace del panel y listo: no necesitas usuario ni contraseña. Usa el menú de la izquierda para moverte entre <i>Resumen</i>, <i>Egresados</i> e <i>Instituciones</i>.</p>
+
+  <h3>2. Resumen general</h3>
+  <p class="intro">Muestra 5 indicadores (egresados, estudios superiores, UEC, empleo, emprendimiento) y 7 gráficas.</p>
+  <figure><img src="img/a2-resumen.png" alt="Resumen general con indicadores y gráficas"><figcaption>Resumen general: filtros, indicadores y gráficas.</figcaption></figure>
+  <ul style="padding-left:1.2rem">
+    <li><b>Filtros cruzados:</b> elige municipio, luego institución y luego año. Cada lista se ajusta a lo que ya elegiste.</li>
+    <li><b>Limpiar filtros:</b> el botón aparece cuando hay alguno activo.</li>
+    <li><b>Actualizar:</b> el botón circular de arriba a la derecha trae las respuestas más recientes.</li>
+    <li><b>Contador:</b> "96 registros" indica cuántas respuestas hay en total.</li>
+  </ul>
+
+  <h3>3. Egresados: buscar, filtrar y exportar</h3>
+  <figure><img src="img/a3-egresados.png" alt="Tabla de egresados con filtros"><figcaption>Tabla de egresados: búsqueda por nombre, filtros y 20 registros por página.</figcaption></figure>
+  <ol class="steps">
+    <li><div>Escribe un nombre en <b>Buscar por nombre</b> o usa los filtros.</div></li>
+    <li><div>Toca una fila para abrir la ficha completa de esa persona.</div></li>
+    <li><div>Toca <b>Exportar CSV</b> para descargar en un archivo lo que ves (con los filtros aplicados). Se abre en Excel.</div></li>
+  </ol>
+
+  <h3>4. Ficha del egresado</h3>
+  <figure><img src="img/a4-detalle.png" alt="Ficha individual de un egresado"><figcaption>Ficha individual: todas las respuestas agrupadas por sección.</figcaption></figure>
+  <p class="intro">Cada sección del formulario aparece como un bloque. Los campos sin respuesta muestran una raya (—). Usa <b>Volver</b> para regresar a la tabla.</p>
+
+  <h3>5. Instituciones y enlaces</h3>
+  <figure><img src="img/a5-instituciones.png" alt="Lista de instituciones con su código y botón para copiar el enlace"><figcaption>Instituciones: municipio, nombre, código y botón para copiar el enlace.</figcaption></figure>
+  <ol class="steps">
+    <li><div>Busca la institución o filtra por municipio.</div></li>
+    <li><div>Toca <b>Copiar enlace</b>.</div></li>
+    <li><div>Envía el enlace a la institución por correo o WhatsApp.</div></li>
+  </ol>
+
+  <h3>6. Vista de la institución</h3>
+  <p class="intro">Lo que recibe cada institución: un panel reducido, sin menú, solo con sus egresados. Cada institución tiene su propio enlace.</p>
+  <figure><img src="img/a6-vista-institucion.png" alt="Vista reducida de una institución"><figcaption>Vista por institución (datos de ejemplo).</figcaption></figure>
+  <div class="warn">Quien tenga el enlace ve los datos de esa institución, incluidos datos personales. Envíalo solo a la persona responsable.</div>
+
+  <h3>Problemas frecuentes</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Qué pasa</th><th>Qué hacer</th></tr>
+    <tr><td>Aparece "No se pudo conectar"</td><td>Revisa tu conexión a internet y toca el botón de actualizar.</td></tr>
+    <tr><td>El enlace de una institución muestra un aviso de enlace no válido</td><td>Vuelve a copiar el enlace desde <i>Instituciones</i> en el panel.</td></tr>
+    <tr><td>No aparece una institución en el cuestionario</td><td>Avisa a la coordinación para que la agreguen.</td></tr>
+    <tr><td>Un egresado dice que ya envió y no lo ves</td><td>Toca el botón de actualizar y busca su nombre en <i>Egresados</i>.</td></tr>
+  </table></div>
+
+  <h3>En el celular</h3>
+  <div class="duo"><div><p class="intro">El menú lateral se vuelve un botón (☰) y las tarjetas se apilan. Todas las funciones están disponibles.</p></div>
+  <figure class="phone"><img src="img/a7-resumen-movil.png" alt="Resumen en el celular"></figure></div>
+</div></section>
+
+
+
+
+<footer><div class="wrap">
+  Seguimiento a Egresados — La Universidad en el Campo · Comité de Cafeteros de Caldas<br>
+  <a href="https://alianzaeducacionrural.github.io/seguimiento-egresados/">Cuestionario</a> · <a href="https://alianzaeducacionrural.github.io/seguimiento-egresados/admin">Panel</a><br>
+  Las capturas del panel usan datos de ejemplo, no datos reales de egresados.
+</div></footer>
+</body></html>

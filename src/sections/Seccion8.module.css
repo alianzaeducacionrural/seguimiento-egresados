@@ -6,7 +6,7 @@
   padding: 1.1rem 1.15rem;
   background: var(--lima-light);
   border: 1.5px solid rgba(141, 198, 63, 0.7);
-  border-radius: 14px;
+  border-radius: var(--radio-lg);
 }
 
 .checkBtn {

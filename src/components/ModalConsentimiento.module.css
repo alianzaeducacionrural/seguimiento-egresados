@@ -12,7 +12,7 @@
 
 .caja {
   background: var(--superficie);
-  border-radius: 22px;
+  border-radius: var(--radio-lg);
   box-shadow: 0 30px 80px -10px rgba(5, 46, 26, 0.4);
   width: 100%;
   max-width: 560px;
@@ -111,7 +111,7 @@
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 6px 16px -4px rgba(14, 107, 59, 0.5);
+  box-shadow: 2px 2px 0 var(--verde-deep);
   transition: opacity var(--transicion), transform var(--transicion);
 }
 

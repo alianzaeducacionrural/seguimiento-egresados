@@ -54,8 +54,8 @@ export function useFormulario() {
       })
       if (resultado.ok) setEnviado(true)
       else setError(resultado.error || 'Error desconocido al enviar.')
-    } catch {
-      setError('No se pudo conectar con el servidor. Revisa tu conexión e intenta de nuevo.')
+    } catch (err) {
+      setError(err.message)
     } finally {
       setEnviando(false)
     }

@@ -36,5 +36,5 @@
   background: var(--verde);
   color: #fff;
   font-weight: 600;
-  box-shadow: 0 4px 12px -3px rgba(14, 107, 59, 0.5);
+  box-shadow: 2px 2px 0 var(--verde-deep);
 }
