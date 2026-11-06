@@ -70,15 +70,27 @@ footer a{color:var(--lima)}
 .pill-dark{display:inline-block;background:var(--ink);color:var(--lima);font-weight:800;font-size:.75rem;padding:.15rem .6rem;border-radius:99px}
 @media print{
   @page{size:A4;margin:12mm}
-  body{background:#fff;font-size:10.5pt}
+  body{background:#fff;font-size:10pt;line-height:1.45}
   nav.toc{display:none}
-  section{break-before:page;padding-top:0}
-  .cover{break-after:page;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cover{padding:36px 0 40px;break-after:page}
+  section{padding:18px 0 0}
+  section>.wrap>h2{font-size:24pt;margin-bottom:.2rem}
+  h2,h3,.kicker,.intro{break-after:avoid}
+  h3{margin:1rem 0 .4rem;font-size:13pt}
+  .intro{margin-bottom:.8rem}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  figure,.card,table,.faq details,.steps li{break-inside:avoid}
-  figure img{max-height:230mm;width:auto;max-width:100%}
-  figure.phone img{max-height:150mm}
-  .duo{grid-template-columns:1fr 300px}
+  .card,.faq details,.steps li,tr,.tip,.warn{break-inside:avoid}
+  table{break-inside:auto;margin:.6rem 0}
+  thead{display:table-header-group}
+  th,td{padding:.35rem .6rem}
+  figure{margin:.7rem 0;break-inside:avoid}
+  figure img{max-height:150mm;width:auto;max-width:100%;margin:0 auto;box-shadow:3px 3px 0 var(--ink)}
+  figure.phone img{max-height:115mm}
+  .duo{grid-template-columns:1fr 250px;gap:1rem}
+  .grid{gap:.6rem}
+  .steps{margin:.5rem 0}.steps li{margin:.45rem 0}
+  .faq details{margin:.35rem 0;padding:.45rem .8rem}
+  footer{margin-top:20px;padding:16px 0}
 }
 </style>
 </head>
